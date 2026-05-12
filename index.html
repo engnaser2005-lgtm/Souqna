@@ -1,253 +1,303 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سوقنا</title>
 
-<title>Souqna Fashion</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 
 <style>
-
-:root{
---bg:#041C3A;
---bg2:#06264D;
---gold:#D4AF37;
---white:#ffffff;
-}
 
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Tajawal',sans-serif;
 }
 
 body{
-background:var(--bg);
+font-family:'Tajawal',sans-serif;
+background:#001f4d;
 color:white;
 }
 
-header{
-background:#03152c;
-padding:20px;
-border-bottom:2px solid var(--gold);
-position:sticky;
-top:0;
-z-index:100;
+a{
+text-decoration:none;
 }
 
-.topbar{
+header{
+background:#00285f;
+padding:20px 40px;
+border-bottom:2px solid #d4af37;
 display:flex;
 justify-content:space-between;
 align-items:center;
-max-width:1200px;
-margin:auto;
+flex-wrap:wrap;
+gap:20px;
 }
 
 .logo{
-font-size:42px;
-font-weight:700;
-color:var(--gold);
+font-size:48px;
+font-weight:900;
+color:#d4af37;
 }
 
-.auth-buttons{
+.header-buttons{
 display:flex;
-gap:10px;
+gap:15px;
 }
 
-.btn{
-background:var(--gold);
-color:#000;
-padding:10px 18px;
+.header-buttons button{
+background:#d4af37;
+color:#001f4d;
 border:none;
+padding:12px 28px;
 border-radius:10px;
-font-weight:700;
+font-size:20px;
+font-weight:bold;
 cursor:pointer;
-text-decoration:none;
 transition:0.3s;
 }
 
-.btn:hover{
-transform:translateY(-3px);
-opacity:0.9;
+.header-buttons button:hover{
+transform:scale(1.05);
+background:#f1c85a;
 }
 
 .hero{
-padding:60px 20px 30px;
+padding:60px 20px;
 text-align:center;
 }
 
 .hero h1{
-font-size:58px;
-color:var(--gold);
-margin-bottom:15px;
-}
-
-.hero p{
-font-size:22px;
-color:#ddd;
-margin-bottom:30px;
-}
-
-.search-box{
-display:flex;
-justify-content:center;
-margin-bottom:25px;
-}
-
-.search-box input{
-width:450px;
-max-width:90%;
-padding:15px;
-border-radius:12px;
-border:none;
-outline:none;
-font-size:18px;
-background:#0b2f5c;
-color:white;
-border:1px solid rgba(255,255,255,0.1);
-}
-
-.search-box input::placeholder{
-color:#ccc;
-}
-
-.categories{
-display:flex;
-justify-content:center;
-gap:12px;
-flex-wrap:wrap;
+font-size:70px;
+color:#d4af37;
 margin-bottom:20px;
 }
 
-.cat-btn{
-background:#0b2f5c;
-color:var(--gold);
-border:1px solid rgba(255,255,255,0.1);
-padding:12px 18px;
-border-radius:10px;
+.hero p{
+font-size:30px;
+color:#ddd;
+margin-bottom:35px;
+}
+
+.search-box{
+max-width:700px;
+margin:auto;
+display:flex;
+background:#0a3b7a;
+border:2px solid #d4af37;
+border-radius:15px;
+overflow:hidden;
+}
+
+.search-box input{
+flex:1;
+padding:20px;
+font-size:22px;
+border:none;
+outline:none;
+background:transparent;
+color:white;
+}
+
+.search-box button{
+background:#d4af37;
+color:#001f4d;
+border:none;
+padding:0 30px;
+font-size:22px;
+font-weight:bold;
 cursor:pointer;
-font-size:16px;
+}
+
+.section-title{
+font-size:45px;
+text-align:center;
+margin:50px 0 30px;
+color:#d4af37;
+}
+
+.categories{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+padding:0 40px 70px;
+}
+
+.category-card{
+background:#062b63;
+border:2px solid rgba(212,175,55,0.3);
+border-radius:20px;
+padding:30px;
+transition:0.3s;
+cursor:pointer;
+}
+
+.category-card:hover{
+transform:translateY(-8px);
+border-color:#d4af37;
+box-shadow:0 0 20px rgba(212,175,55,0.4);
+}
+
+.category-card h3{
+font-size:30px;
+margin-bottom:15px;
+color:#d4af37;
+}
+
+.category-card p{
+font-size:20px;
+line-height:1.8;
+color:#ddd;
+}
+
+.marketing{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+padding:0 40px 70px;
+}
+
+.marketing-card{
+background:#0a3775;
+padding:25px;
+border-radius:18px;
+border:2px solid rgba(212,175,55,0.3);
+text-align:center;
 transition:0.3s;
 }
 
-.cat-btn:hover{
-background:var(--gold);
-color:black;
+.marketing-card:hover{
+transform:scale(1.05);
+border-color:#d4af37;
+}
+
+.marketing-card h3{
+font-size:28px;
+color:#d4af37;
+margin-bottom:10px;
+}
+
+.marketing-card p{
+font-size:18px;
+color:#ddd;
 }
 
 .products{
-max-width:1300px;
-margin:auto;
-padding:20px;
+padding:0 40px 80px;
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 gap:25px;
 }
 
-.card{
-background:var(--bg2);
-border-radius:18px;
+.product-card{
+background:#072c65;
+border-radius:20px;
 overflow:hidden;
+border:2px solid rgba(212,175,55,0.3);
 transition:0.3s;
-border:1px solid rgba(255,255,255,0.08);
-box-shadow:0 10px 30px rgba(0,0,0,0.25);
 }
 
-.card:hover{
-transform:translateY(-6px);
+.product-card:hover{
+transform:translateY(-8px);
+border-color:#d4af37;
 }
 
-.card img{
+.product-card img{
 width:100%;
-height:300px;
+height:250px;
 object-fit:cover;
-background:#0b2f5c;
 }
 
-.card-content{
-padding:18px;
+.product-info{
+padding:20px;
 }
 
-.card-title{
-font-size:24px;
-color:var(--gold);
+.product-info h3{
+font-size:28px;
+color:#d4af37;
 margin-bottom:10px;
-font-weight:700;
 }
 
-.card-price{
-font-size:22px;
-font-weight:bold;
-margin-bottom:12px;
-}
-
-.card-description{
+.product-info p{
+font-size:18px;
+margin-bottom:15px;
 color:#ddd;
-line-height:1.7;
 }
 
-.loading{
-text-align:center;
-font-size:30px;
-color:var(--gold);
-padding:60px;
-}
-
-.empty{
-text-align:center;
+.price{
 font-size:26px;
-color:var(--gold);
-padding:60px;
+font-weight:bold;
+color:#fff;
+margin-bottom:15px;
+}
+
+.buy-btn{
+width:100%;
+background:#d4af37;
+color:#001f4d;
+border:none;
+padding:14px;
+font-size:20px;
+font-weight:bold;
+border-radius:10px;
+cursor:pointer;
 }
 
 footer{
-margin-top:50px;
-padding:25px;
+background:#00285f;
+padding:30px;
 text-align:center;
-border-top:1px solid rgba(255,255,255,0.1);
-color:#bbb;
+border-top:2px solid #d4af37;
+font-size:20px;
+color:#ddd;
 }
 
 @media(max-width:768px){
 
 .logo{
-font-size:30px;
+font-size:38px;
 }
 
 .hero h1{
-font-size:42px;
+font-size:45px;
 }
 
-.topbar{
+.hero p{
+font-size:22px;
+}
+
+.search-box{
 flex-direction:column;
-gap:15px;
+}
+
+.search-box button{
+padding:15px;
 }
 
 }
 
 </style>
-
 </head>
 
 <body>
 
 <header>
 
-<div class="topbar">
-
 <div class="logo">
-Souqna Fashion
+سوقنا
 </div>
 
-<div class="auth-buttons">
-<a href="signup.html" class="btn">تسجيل</a>
-<a href="login.html" class="btn">دخول</a>
-</div>
+<div class="header-buttons">
+
+<button onclick="window.location.href='login.html'">
+دخول
+</button>
+
+<button onclick="window.location.href='signup.html'">
+تسجيل
+</button>
 
 </div>
 
@@ -255,150 +305,353 @@ Souqna Fashion
 
 <section class="hero">
 
-<h1>أحدث صيحات الملابس</h1>
+<h1>
+أفضل المنتجات
+</h1>
 
 <p>
-تسوق أفضل الملابس الرجالية والنسائية بأفضل الأسعار
+تصفح آلاف المنتجات بسهولة
 </p>
 
 <div class="search-box">
+
 <input type="text" id="searchInput" placeholder="ابحث عن منتج...">
-</div>
 
-<div class="categories">
-
-<button class="cat-btn">رجالي</button>
-
-<button class="cat-btn">نسائي</button>
-
-<button class="cat-btn">أطفال</button>
-
-<button class="cat-btn">أحذية</button>
-
-<button class="cat-btn">حقائب</button>
+<button onclick="searchProducts()">
+بحث
+</button>
 
 </div>
 
 </section>
 
-<div id="loading" class="loading">
-جاري تحميل المنتجات...
+<h2 class="section-title">
+الأقسام الرئيسية
+</h2>
+
+<div class="categories">
+
+<a href="electronics.html">
+<div class="category-card">
+<h3>الإلكترونيات</h3>
+<p>
+جوالات - لابتوبات - سماعات - ساعات ذكية - كاميرات
+</p>
+</div>
+</a>
+
+<a href="fashion.html">
+<div class="category-card">
+<h3>الأزياء والموضة</h3>
+<p>
+رجالي - نسائي - أطفال - أحذية - شنط - إكسسوارات
+</p>
+</div>
+</a>
+
+<a href="home.html">
+<div class="category-card">
+<h3>البيت والمطبخ</h3>
+<p>
+أثاث - ديكور - أدوات منزلية - أجهزة مطبخ - مفروشات
+</p>
+</div>
+</a>
+
+<a href="beauty.html">
+<div class="category-card">
+<h3>الجمال والعناية الشخصية</h3>
+<p>
+مكياج - عناية بالبشرة - عطور - عناية بالشعر
+</p>
+</div>
+</a>
+
+<a href="sports.html">
+<div class="category-card">
+<h3>الصحة والرياضة</h3>
+<p>
+مكملات غذائية - معدات رياضية - أجهزة لياقة
+</p>
+</div>
+</a>
+
+<a href="baby.html">
+<div class="category-card">
+<h3>الأم والطفل</h3>
+<p>
+ألعاب - ملابس أطفال - مستلزمات حديثي الولادة
+</p>
+</div>
+</a>
+
+<a href="market.html">
+<div class="category-card">
+<h3>السوبر ماركت والمواد الغذائية</h3>
+<p>
+بقالة - مشروبات - وجبات خفيفة
+</p>
+</div>
+</a>
+
+<a href="books.html">
+<div class="category-card">
+<h3>الكتب والقرطاسية</h3>
+<p>
+كتب - أدوات مكتبية - أدوات فنية
+</p>
+</div>
+</a>
+
+<a href="cars.html">
+<div class="category-card">
+<h3>السيارات وقطع الغيار</h3>
+<p>
+إكسسوارات سيارات - زيوت - إطارات
+</p>
+</div>
+</a>
+
+<a href="pets.html">
+<div class="category-card">
+<h3>الحيوانات الأليفة</h3>
+<p>
+أكل - ألعاب - مستلزمات العناية
+</p>
+</div>
+</a>
+
 </div>
 
-<div class="products" id="products"></div>
+<h2 class="section-title">
+أقسام تسويقية
+</h2>
+
+<div class="marketing">
+
+<div class="marketing-card">
+<h3>الأكثر مبيعاً</h3>
+<p>
+أفضل المنتجات طلباً
+</p>
+</div>
+
+<div class="marketing-card">
+<h3>عروض وخصومات</h3>
+<p>
+تخفيضات قوية يومية
+</p>
+</div>
+
+<div class="marketing-card">
+<h3>وصل حديثاً</h3>
+<p>
+منتجات جديدة باستمرار
+</p>
+</div>
+
+<div class="marketing-card">
+<h3>مميز / مختار لك</h3>
+<p>
+منتجات مقترحة خصيصاً لك
+</p>
+</div>
+
+<div class="marketing-card">
+<h3>تصفية المخزون</h3>
+<p>
+أسعار خاصة لفترة محدودة
+</p>
+</div>
+
+</div>
+
+<h2 class="section-title">
+أقسام حسب الاستخدام
+</h2>
+
+<div class="marketing">
+
+<div class="marketing-card">
+<h3>للطلاب</h3>
+<p>
+لابتوبات وأدوات دراسة
+</p>
+</div>
+
+<div class="marketing-card">
+<h3>للعمل</h3>
+<p>
+ملابس رسمية وأدوات مكتبية
+</p>
+</div>
+
+<div class="marketing-card">
+<h3>للمناسبات</h3>
+<p>
+هدايا وتجهيزات أفراح وأعياد
+</p>
+</div>
+
+<div class="marketing-card">
+<h3>للسفر</h3>
+<p>
+شنط سفر وإكسسوارات رحلات
+</p>
+</div>
+
+</div>
+
+<h2 class="section-title">
+منتجات مميزة
+</h2>
+
+<div class="products" id="productsContainer">
+
+<div class="product-card">
+
+<img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200&auto=format&fit=crop" alt="جوال">
+
+<div class="product-info">
+
+<h3>
+iPhone 15 Pro
+</h3>
+
+<p>
+أحدث هواتف آيفون بمواصفات قوية
+</p>
+
+<div class="price">
+1200$
+</div>
+
+<button class="buy-btn">
+شراء الآن
+</button>
+
+</div>
+
+</div>
+
+<div class="product-card">
+
+<img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=1200&auto=format&fit=crop" alt="ملابس">
+
+<div class="product-info">
+
+<h3>
+ملابس رجالية
+</h3>
+
+<p>
+أحدث صيحات الموضة الرجالية
+</p>
+
+<div class="price">
+45$
+</div>
+
+<button class="buy-btn">
+شراء الآن
+</button>
+
+</div>
+
+</div>
+
+<div class="product-card">
+
+<img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1200&auto=format&fit=crop" alt="سماعات">
+
+<div class="product-info">
+
+<h3>
+سماعات لاسلكية
+</h3>
+
+<p>
+صوت نقي وعزل احترافي
+</p>
+
+<div class="price">
+99$
+</div>
+
+<button class="buy-btn">
+شراء الآن
+</button>
+
+</div>
+
+</div>
+
+<div class="product-card">
+
+<img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop" alt="أحذية">
+
+<div class="product-info">
+
+<h3>
+أحذية رياضية
+</h3>
+
+<p>
+راحة وأناقة للجميع
+</p>
+
+<div class="price">
+70$
+</div>
+
+<button class="buy-btn">
+شراء الآن
+</button>
+
+</div>
+
+</div>
+
+</div>
 
 <footer>
-جميع الحقوق محفوظة © Souqna Fashion
-</footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+جميع الحقوق محفوظة © سوقنا 2026
+
+</footer>
 
 <script>
 
-const supabaseUrl = 'https://dkhjaktcjbnndxtxcetf.supabase.co'
+function searchProducts(){
 
-const supabaseKey = 'sb_publishable_Xuhcjef7xW1PFpSuVLmK8A_rFXBFcMd'
+let input =
+document.getElementById("searchInput")
+.value
+.toLowerCase();
 
-const supabase = window.supabase.createClient(
-supabaseUrl,
-supabaseKey
-)
+let products =
+document.querySelectorAll(".product-card");
 
-async function loadProducts(searchTerm = ""){
+products.forEach(function(product){
 
-const productsContainer = document.getElementById("products")
+let text =
+product.innerText.toLowerCase();
 
-const loading = document.getElementById("loading")
+if(text.includes(input)){
 
-productsContainer.innerHTML = ""
+product.style.display = "block";
 
-loading.style.display = "block"
+}else{
 
-let query = supabase
-.from("products")
-.select("*")
-.order("created_at",{ascending:false})
-
-if(searchTerm){
-
-query = query.ilike("title", `%${searchTerm}%`)
+product.style.display = "none";
 
 }
 
-const { data , error } = await query
-
-loading.style.display = "none"
-
-if(error){
-
-productsContainer.innerHTML = `
-<div class="empty">
-فشل تحميل المنتجات
-</div>
-`
-
-console.log(error)
-
-return
-}
-
-if(!data || data.length === 0){
-
-productsContainer.innerHTML = `
-<div class="empty">
-لا توجد منتجات حالياً
-</div>
-`
-
-return
-}
-
-data.forEach(product=>{
-
-const card = document.createElement("div")
-
-card.className = "card"
-
-card.innerHTML = `
-
-<img src="${product.image || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600'}">
-
-<div class="card-content">
-
-<div class="card-title">
-${product.title || 'منتج بدون اسم'}
-</div>
-
-<div class="card-price">
-${product.price || 0} $
-</div>
-
-<div class="card-description">
-${product.description || 'لا يوجد وصف'}
-</div>
-
-</div>
-
-`
-
-productsContainer.appendChild(card)
-
-})
+});
 
 }
-
-const searchInput = document.getElementById("searchInput")
-
-searchInput.addEventListener("input", ()=>{
-
-loadProducts(searchInput.value)
-
-})
-
-loadProducts()
 
 </script>
 
 </body>
-
 </html>
