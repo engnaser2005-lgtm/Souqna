@@ -70,14 +70,19 @@
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-    const supabaseUrl = 'ضع_رابط_المشروع_هنا'
-    const supabaseKey = 'ضع_المفتاح_هنا'
+    const supabaseUrl = 'https://guhocivwbrfhgjynzesy.supabase.co'
+    const supabaseKey = 'sb_publishable_w0yAXfyfGpu0IHw64IINgA_cyLEZyN1'
     const supabase = createClient(supabaseUrl, supabaseKey)
 
     const urlParams = new URLSearchParams(window.location.search)
     const productId = urlParams.get('id')
 
     async function loadProduct() {
+      if (!productId) {
+        document.getElementById('productDetail').innerHTML = '<p>المنتج غير موجود</p>'
+        return
+      }
+
       const { data, error } = await supabase
         .from('products')
         .select('*')
@@ -86,6 +91,7 @@
 
       if (error || !data) {
         document.getElementById('productDetail').innerHTML = '<p>المنتج غير موجود</p>'
+        console.error(error)
         return
       }
 
@@ -95,7 +101,7 @@
           <div class="info">
             <h1>${data.name}</h1>
             <p class="price">${data.price} ريال</p>
-            <p>هذا وصف تجريبي للمنتج. تقدر تضيف عمود description في Supabase وتعرضه هنا.</p>
+            <p>${data.description || 'لا يوجد وصف للمنتج'}</p>
             <button class="btn">إتمام الشراء</button>
           </div>
         </div>
