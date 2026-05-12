@@ -15,7 +15,6 @@
       --text-muted: #8892B0;
       --gold-primary: #D4AF37;
       --gold-light: #F1E0A6;
-      --gold-dark: #B8941F;
       --border: rgba(212, 175, 55, 0.2);
       --shadow-gold: rgba(212, 175, 55, 0.3);
     }
@@ -26,10 +25,8 @@
       font-family: 'Tajawal', sans-serif; 
       background: var(--bg-primary);
       color: var(--text-primary);
-      overflow-x: hidden;
     }
 
-    /* Navbar */
     header {
       position: sticky;
       top: 0;
@@ -69,17 +66,6 @@
       border-radius: 50px;
       color: var(--text-primary);
       font-size: 15px;
-      transition: all 0.3s;
-    }
-
-    .search-bar input:focus {
-      outline: none;
-      border-color: var(--gold-primary);
-      box-shadow: 0 0 20px var(--shadow-gold);
-    }
-
-    .search-bar input::placeholder {
-      color: var(--text-muted);
     }
 
     .auth-btns {
@@ -115,12 +101,6 @@
       border: 1px solid var(--border);
     }
 
-    .btn-outline:hover {
-      background: rgba(212, 175, 55, 0.1);
-      border-color: var(--gold-primary);
-    }
-
-    /* Hero Section */
     .hero {
       height: 500px;
       background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
@@ -128,29 +108,6 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
-      top: -200px;
-      right: -200px;
-      animation: float 6s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
     }
 
     .hero-content h1 {
@@ -168,31 +125,22 @@
       margin-bottom: 30px;
     }
 
-    /* Sections */
     section {
       max-width: 1400px;
       margin: 80px auto;
       padding: 0 5%;
     }
 
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 40px;
-    }
-
     .section-title {
       font-size: 32px;
       font-weight: 800;
-      color: var(--text-primary);
+      margin-bottom: 40px;
     }
 
     .section-title span {
       color: var(--gold-primary);
     }
 
-    /* Product Grid */
     #products {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -206,7 +154,6 @@
       border-radius: 20px;
       overflow: hidden;
       transition: all 0.4s;
-      position: relative;
     }
 
     .product:hover {
@@ -219,11 +166,6 @@
       width: 100%;
       height: 250px;
       object-fit: cover;
-      transition: transform 0.4s;
-    }
-
-    .product:hover .product-img {
-      transform: scale(1.05);
     }
 
     .product-info {
@@ -243,35 +185,16 @@
       margin-bottom: 15px;
     }
 
-    .product-actions {
-      display: flex;
-      gap: 10px;
+    .loading {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 40px;
     }
 
-    .product-actions button {
-      flex: 1;
-    }
-
-    /* Animations */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeIn 0.6s forwards;
-    }
-
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Responsive */
     @media (max-width: 768px) {
       .search-bar { display: none; }
       .hero-content h1 { font-size: 36px; }
-      #products { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
-      .section-title { font-size: 24px; }
+      #products { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
     }
   </style>
 </head>
@@ -294,7 +217,7 @@
   </header>
 
   <div class="hero">
-    <div class="hero-content fade-in">
+    <div class="hero-content">
       <h1>تسوق بفخامة</h1>
       <p>أفضل المنتجات من أفضل البائعين في مكان واحد</p>
       <button class="btn btn-gold" onclick="document.getElementById('featured').scrollIntoView()">تصفح الآن</button>
@@ -302,10 +225,10 @@
   </div>
 
   <section id="featured">
-    <div class="section-header">
-      <h2 class="section-title">المنتجات <span>المميزة</span></h2>
+    <h2 class="section-title">المنتجات <span>المميزة</span></h2>
+    <div id="products">
+      <p class="loading">جاري تحميل المنتجات...</p>
     </div>
-    <div id="products"></div>
   </section>
 
   <script type="module">
@@ -313,43 +236,57 @@
     const supabase = createClient('https://guhocivwbrfhgjynzesy.supabase.co', 'sb_publishable_w0yAXfyfGpu0IHw64IINgA_cyLEZyN1')
 
     async function loadProducts() {
-      const { data: products, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('status', 'approved')
+      try {
+        const { data: products, error } = await supabase
+          .from('products')
+          .select('*')
+          .eq('status', 'approved')
 
-      const container = document.getElementById('products')
-      
-      if (error || !products || products.length === 0) {
-        container.innerHTML = '<p style="text-align:center; color:var(--text-muted)">لا توجد منتجات متاحة حالياً</p>'
-        return
-      }
+        const container = document.getElementById('products')
+        
+        if (error) {
+          console.error('خطأ Supabase:', error)
+          container.innerHTML = '<p class="loading">حدث خطأ في تحميل المنتجات</p>'
+          return
+        }
 
-      container.innerHTML = products.map((p, i) => `
-        <div class="product fade-in" style="animation-delay: ${i * 0.1}s">
-          <img src="${p.image_url || 'https://via.placeholder.com/300x250?text=No+Image'}" class="product-img" loading="lazy">
-          <div class="product-info">
-            <h3>${p.name}</h3>
-            <div class="price">${p.price} ريال</div>
-            <div class="product-actions">
-              <button class="btn btn-gold" onclick="location.href='details.html?id=${p.id}'">شراء</button>
+        if (!products || products.length === 0) {
+          container.innerHTML = '<p class="loading">لا توجد منتجات متاحة حالياً</p>'
+          return
+        }
+
+        container.innerHTML = products.map(p => `
+          <div class="product">
+            <img src="${p.image_url || 'https://via.placeholder.com/300x250?text=No+Image'}" class="product-img" loading="lazy">
+            <div class="product-info">
+              <h3>${p.name}</h3>
+              <div class="price">${p.price} ريال</div>
+              <button class="btn btn-gold" style="width:100%" onclick="location.href='details.html?id=${p.id}'">شراء</button>
             </div>
           </div>
-        </div>
-      `).join('')
+        `).join('')
+        
+      } catch (err) {
+        console.error('خطأ عام:', err)
+        document.getElementById('products').innerHTML = '<p class="loading">حدث خطأ غير متوقع</p>'
+      }
     }
 
     async function checkUser() {
-      const { data: { user } = await supabase.auth.getUser()
-      
-      if (user) {
-        document.getElementById('logoutBtn').style.display = 'inline-block'
+      try {
+        const { data: { user } = await supabase.auth.getUser()
         
-        const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
-        
-        if (profile?.role === 'seller') {
-          document.getElementById('btn-add').style.display = 'inline-block'
+        if (user) {
+          document.getElementById('logoutBtn').style.display = 'inline-block'
+          
+          const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+          
+          if (profile?.role === 'seller') {
+            document.getElementById('btn-add').style.display = 'inline-block'
+          }
         }
+      } catch (err) {
+        console.error('خطأ في checkUser:', err)
       }
     }
 
