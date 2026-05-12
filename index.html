@@ -205,7 +205,7 @@
           return
         }
 
-        const { data: { publicUrl } = supabase.storage
+        const { data: { publicUrl } = await supabase.storage
           .from('products')
           .getPublicUrl(fileName)
         
