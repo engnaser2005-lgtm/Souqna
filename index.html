@@ -7,21 +7,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --dark-blue: #0A192F;
-      --secondary-blue: #112240;
-      --gold: #D4AF37;
-      --gold-light: #F1E0A6;
-      --text-light: #E6F1FF;
+      --bg-primary: #020C1B;
+      --bg-secondary: #0A192F;
+      --bg-card: rgba(255, 255, 255, 0.05);
+      --text-primary: #E6F1FF;
+      --text-secondary: #A8B2D1;
       --text-muted: #8892B0;
-      --bg-dark: #020C1B;
+      --gold-primary: #D4AF37;
+      --gold-light: #F1E0A6;
+      --gold-dark: #B8941F;
+      --border: rgba(212, 175, 55, 0.2);
+      --shadow-gold: rgba(212, 175, 55, 0.3);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body { 
       font-family: 'Tajawal', sans-serif; 
-      background: var(--bg-dark);
-      color: var(--text-light);
+      background: var(--bg-primary);
+      color: var(--text-primary);
       overflow-x: hidden;
     }
 
@@ -32,7 +36,7 @@
       z-index: 100;
       background: rgba(10, 25, 47, 0.8);
       backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      border-bottom: 1px solid var(--border);
       padding: 15px 5%;
     }
 
@@ -48,7 +52,7 @@
     .logo {
       font-size: 28px;
       font-weight: 900;
-      color: var(--gold);
+      color: var(--gold-primary);
       text-decoration: none;
     }
 
@@ -60,18 +64,22 @@
     .search-bar input {
       width: 100%;
       padding: 12px 20px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(212, 175, 55, 0.3);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: 50px;
-      color: var(--text-light);
+      color: var(--text-primary);
       font-size: 15px;
       transition: all 0.3s;
     }
 
     .search-bar input:focus {
       outline: none;
-      border-color: var(--gold);
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 20px var(--shadow-gold);
+    }
+
+    .search-bar input::placeholder {
+      color: var(--text-muted);
     }
 
     .auth-btns {
@@ -87,34 +95,35 @@
       font-weight: 700;
       transition: all 0.3s;
       font-size: 14px;
+      font-family: 'Tajawal', sans-serif;
     }
 
     .btn-gold {
-      background: var(--gold);
-      color: var(--dark-blue);
+      background: var(--gold-primary);
+      color: var(--bg-primary);
     }
 
     .btn-gold:hover {
       background: var(--gold-light);
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+      box-shadow: 0 8px 20px var(--shadow-gold);
     }
 
     .btn-outline {
       background: transparent;
-      color: var(--text-light);
-      border: 1px solid rgba(212, 175, 55, 0.5);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
     }
 
     .btn-outline:hover {
       background: rgba(212, 175, 55, 0.1);
-      border-color: var(--gold);
+      border-color: var(--gold-primary);
     }
 
-    /* Hero Slider */
+    /* Hero Section */
     .hero {
       height: 500px;
-      background: linear-gradient(135deg, var(--dark-blue) 0%, var(--secondary-blue) 100%);
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -128,7 +137,7 @@
       position: absolute;
       width: 600px;
       height: 600px;
-      background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
       top: -200px;
       right: -200px;
       animation: float 6s ease-in-out infinite;
@@ -139,18 +148,23 @@
       50% { transform: translateY(-20px); }
     }
 
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
     .hero-content h1 {
       font-size: 56px;
       font-weight: 900;
       margin-bottom: 20px;
-      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      background: linear-gradient(90deg, var(--gold-primary), var(--gold-light));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .hero-content p {
       font-size: 20px;
-      color: var(--text-muted);
+      color: var(--text-secondary);
       margin-bottom: 30px;
     }
 
@@ -171,11 +185,11 @@
     .section-title {
       font-size: 32px;
       font-weight: 800;
-      color: var(--text-light);
+      color: var(--text-primary);
     }
 
     .section-title span {
-      color: var(--gold);
+      color: var(--gold-primary);
     }
 
     /* Product Grid */
@@ -186,9 +200,9 @@
     }
 
     .product {
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--bg-card);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(212, 175, 55, 0.2);
+      border: 1px solid var(--border);
       border-radius: 20px;
       overflow: hidden;
       transition: all 0.4s;
@@ -197,8 +211,8 @@
 
     .product:hover {
       transform: translateY(-10px);
-      border-color: var(--gold);
-      box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+      border-color: var(--gold-primary);
+      box-shadow: 0 20px 40px var(--shadow-gold);
     }
 
     .product-img {
@@ -219,13 +233,13 @@
     .product h3 {
       font-size: 18px;
       margin-bottom: 10px;
-      color: var(--text-light);
+      color: var(--text-primary);
     }
 
     .product .price {
       font-size: 24px;
       font-weight: 800;
-      color: var(--gold);
+      color: var(--gold-primary);
       margin-bottom: 15px;
     }
 
@@ -252,10 +266,12 @@
       }
     }
 
+    /* Responsive */
     @media (max-width: 768px) {
       .search-bar { display: none; }
       .hero-content h1 { font-size: 36px; }
       #products { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
+      .section-title { font-size: 24px; }
     }
   </style>
 </head>
@@ -305,13 +321,13 @@
       const container = document.getElementById('products')
       
       if (error || !products || products.length === 0) {
-        container.innerHTML = '<p style="text-align:center; color:var(--text-muted)">لا توجد منتجات متاحة</p>'
+        container.innerHTML = '<p style="text-align:center; color:var(--text-muted)">لا توجد منتجات متاحة حالياً</p>'
         return
       }
 
       container.innerHTML = products.map((p, i) => `
         <div class="product fade-in" style="animation-delay: ${i * 0.1}s">
-          <img src="${p.image_url || 'https://via.placeholder.com/300x250?text=No+Image'}" class="product-img">
+          <img src="${p.image_url || 'https://via.placeholder.com/300x250?text=No+Image'}" class="product-img" loading="lazy">
           <div class="product-info">
             <h3>${p.name}</h3>
             <div class="price">${p.price} ريال</div>
