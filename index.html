@@ -304,6 +304,7 @@ font-weight:bold;
 box-shadow:0 0 20px rgba(0,0,0,0.3);
 cursor:pointer;
 z-index:999;
+border:none;
 }
 
 footer{
@@ -530,13 +531,9 @@ Souqna
 
 </div>
 
-<a href="add-product.html">
-
-<div class="add-product-btn">
+<button class="add-product-btn" onclick="checkSeller()">
 + إضافة منتج
-</div>
-
-</a>
+</button>
 
 <footer>
 
@@ -546,11 +543,14 @@ Souqna
 
 <script>
 
-const SUPABASE_URL = "https://dkhjaktcjbnndxtxcetf.supabase.co"
+const SUPABASE_URL =
+"https://dkhjaktcjbnndxtxcetf.supabase.co"
 
-const SUPABASE_KEY = "ضع_المفتاح_العام_هنا"
+const SUPABASE_KEY =
+"sb_publishable_Xuhcjef7xW1PFpSuVLmK8A_rFXBFcMd"
 
-const supabaseClient = supabase.createClient(
+const supabaseClient =
+supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
 )
@@ -573,11 +573,10 @@ if(error){
 
 console.log(error)
 
-container.innerHTML = `
-<div class="loading">
+container.innerHTML =
+`<div class="loading">
 فشل تحميل المنتجات
-</div>
-`
+</div>`
 
 return
 
@@ -585,11 +584,10 @@ return
 
 if(!data || data.length === 0){
 
-container.innerHTML = `
-<div class="loading">
+container.innerHTML =
+`<div class="loading">
 لا توجد منتجات حالياً
-</div>
-`
+</div>`
 
 return
 
@@ -603,7 +601,8 @@ container.innerHTML += `
 
 <div class="product-card">
 
-<img class="product-image"
+<img
+class="product-image"
 src="${product.image}"
 onerror="this.src='https://via.placeholder.com/400x300?text=Souqna'">
 
@@ -679,6 +678,27 @@ card.style.display = "none"
 }
 
 })
+
+}
+
+async function checkSeller(){
+
+const {
+data:{session}
+} =
+await supabaseClient.auth.getSession()
+
+if(!session){
+
+window.location.href =
+"signup.html"
+
+return
+
+}
+
+window.location.href =
+"add-product.html"
 
 }
 
