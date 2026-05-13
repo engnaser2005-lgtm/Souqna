@@ -1,45 +1,63 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>تسجيل</title>
-  <style>
-    body { font-family: Tajawal; background: #f5f5f5; display: flex; justify-content: center; align-items: center; height: 100vh; }
-    .box { background: white; padding: 30px; border-radius: 12px; width: 350px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-    button { width: 100%; padding: 12px; background: #28a745; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إنشاء حساب</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+body{
+background:#041C3A;
+font-family:'Tajawal',sans-serif;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+.form-box{
+background:#06264D;
+padding:40px;
+border-radius:20px;
+width:450px;
+color:white;
+}
+h1{
+text-align:center;
+color:#D4AF37;
+}
+input,select{
+width:100%;
+padding:15px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+background:#0b2f5c;
+color:white;
+}
+button{
+width:100%;
+padding:15px;
+margin-top:20px;
+background:#D4AF37;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+}
+</style>
 </head>
 <body>
-  <div class="box">
-    <h2 id="title">تسجيل</h2>
-    <input type="email" id="email" placeholder="الإيميل">
-    <input type="password" id="password" placeholder="كلمة المرور">
-    <button onclick="signup()">تسجيل</button>
-  </div>
-
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-    const supabase = createClient('https://guhocivwbrfhgjynzesy.supabase.co', 'sb_publishable_w0yAXfyfGpu0IHw64IINgA_cyLEZyN1')
-
-    const urlParams = new URLSearchParams(window.location.search)
-    const role = urlParams.get('type') || 'buyer'
-    document.getElementById('title').textContent = role === 'seller' ? 'تسجيل كبائع' : 'تسجيل كمشتري'
-
-    window.signup = async () => {
-      const email = document.getElementById('email').value
-      const password = document.getElementById('password').value
-      
-      const { data, error } = await supabase.auth.signUp({ email, password })
-      
-      if (error) return alert(error.message)
-      
-      // احفظ role في جدول profiles
-      await supabase.from('profiles').insert({ id: data.user.id, role })
-      
-      alert('تم التسجيل بنجاح!')
-      location.href = 'index.html'
-    }
-  </script>
-</body>
+<div class="form-box">
+<h1>إنشاء حساب</h1>
+<input type="text" placeholder="الاسم الكامل">
+<input type="email" placeholder="البريد الإلكتروني">
+<input type="password" placeholder="كلمة المرور">
+<input type="text" placeholder="المدينة">
+<select>
+<option>مشتري</option>
+<option>بائع</option>
+</select>
+<button>إنشاء الحساب</button>
+</div>
 </html>
