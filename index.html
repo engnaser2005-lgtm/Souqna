@@ -21,6 +21,79 @@ font-family:'Tajawal',sans-serif;
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="supabase.js"></script>
+  <script>
+
+async function loadProducts(){
+
+const container =
+document.getElementById("products")
+
+const { data , error } =
+await supabase
+.from("products")
+.select("*")
+
+if(error){
+
+console.log(error)
+return
+
+}
+
+container.innerHTML = ""
+
+data.forEach(product=>{
+
+container.innerHTML += `
+
+<div class="product-card">
+
+<img class="product-image"
+src="${product.image}">
+
+<div class="product-content">
+
+<div class="product-title">
+${product.title}
+</div>
+
+<div class="product-price">
+${product.price} $
+</div>
+
+<div class="product-description">
+${product.description}
+</div>
+
+<div class="product-buttons">
+
+<button class="buy-btn">
+شراء
+</button>
+
+<a href="product-details.html">
+
+<button class="details-btn">
+التفاصيل
+</button>
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+`
+
+})
+
+}
+
+loadProducts()
+
+</script>
 body{
 background:#041C3A;
 color:white;
