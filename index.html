@@ -1,10 +1,12 @@
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>سوقنا</title>
+
+<title>Souqna - سوقنا</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 
@@ -14,22 +16,30 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
+font-family:'Tajawal',sans-serif;
 }
 
 body{
-font-family:'Tajawal',sans-serif;
-background:#001f4d;
+background:#041C3A;
 color:white;
+overflow-x:hidden;
 }
 
 a{
 text-decoration:none;
+color:white;
 }
 
 header{
-background:#00285f;
-padding:20px 40px;
-border-bottom:2px solid #d4af37;
+background:#02152d;
+border-bottom:2px solid #D4AF37;
+padding:15px 25px;
+position:sticky;
+top:0;
+z-index:999;
+}
+
+.top-header{
 display:flex;
 justify-content:space-between;
 align-items:center;
@@ -37,10 +47,29 @@ flex-wrap:wrap;
 gap:20px;
 }
 
-.logo{
-font-size:48px;
+.logo-area{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.logo-icon{
+width:60px;
+height:60px;
+background:#D4AF37;
+border-radius:15px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+font-weight:bold;
+color:#041C3A;
+}
+
+.logo-text{
+font-size:42px;
 font-weight:900;
-color:#d4af37;
+color:#D4AF37;
 }
 
 .header-buttons{
@@ -48,54 +77,42 @@ display:flex;
 gap:15px;
 }
 
-.header-buttons button{
-background:#d4af37;
-color:#001f4d;
-border:none;
-padding:12px 28px;
+.header-btn{
+background:#D4AF37;
+color:#041C3A;
+padding:12px 22px;
 border-radius:10px;
-font-size:20px;
+font-size:18px;
 font-weight:bold;
+border:none;
 cursor:pointer;
 transition:0.3s;
 }
 
-.header-buttons button:hover{
-transform:scale(1.05);
-background:#f1c85a;
+.header-btn:hover{
+transform:translateY(-3px);
 }
 
-.hero{
-padding:60px 20px;
-text-align:center;
-}
-
-.hero h1{
-font-size:70px;
-color:#d4af37;
-margin-bottom:20px;
-}
-
-.hero p{
-font-size:30px;
-color:#ddd;
-margin-bottom:35px;
+.search-area{
+margin-top:20px;
+display:flex;
+justify-content:center;
 }
 
 .search-box{
-max-width:700px;
-margin:auto;
+width:700px;
+max-width:100%;
 display:flex;
-background:#0a3b7a;
-border:2px solid #d4af37;
+background:#0b2f5c;
+border:2px solid #D4AF37;
 border-radius:15px;
 overflow:hidden;
 }
 
 .search-box input{
 flex:1;
-padding:20px;
-font-size:22px;
+padding:18px;
+font-size:18px;
 border:none;
 outline:none;
 background:transparent;
@@ -103,433 +120,388 @@ color:white;
 }
 
 .search-box button{
-background:#d4af37;
-color:#001f4d;
+background:#D4AF37;
+color:#041C3A;
 border:none;
-padding:0 30px;
-font-size:22px;
+padding:0 25px;
+font-size:18px;
 font-weight:bold;
 cursor:pointer;
 }
 
-.section-title{
-font-size:45px;
-text-align:center;
-margin:50px 0 30px;
-color:#d4af37;
-}
-
-.categories{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
-padding:0 40px 70px;
-}
-
-.category-card{
-background:#062b63;
-border:2px solid rgba(212,175,55,0.3);
-border-radius:20px;
-padding:30px;
-transition:0.3s;
-cursor:pointer;
-}
-
-.category-card:hover{
-transform:translateY(-8px);
-border-color:#d4af37;
-box-shadow:0 0 20px rgba(212,175,55,0.4);
-}
-
-.category-card h3{
-font-size:30px;
-margin-bottom:15px;
-color:#d4af37;
-}
-
-.category-card p{
-font-size:20px;
-line-height:1.8;
-color:#ddd;
-}
-
-.marketing{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-padding:0 40px 70px;
-}
-
-.marketing-card{
-background:#0a3775;
+.layout{
+display:flex;
 padding:25px;
-border-radius:18px;
-border:2px solid rgba(212,175,55,0.3);
-text-align:center;
-transition:0.3s;
+gap:20px;
 }
 
-.marketing-card:hover{
-transform:scale(1.05);
-border-color:#d4af37;
+.right-sidebar,
+.left-sidebar{
+width:240px;
+background:#06264D;
+padding:20px;
+border-radius:20px;
+height:fit-content;
+position:sticky;
+top:130px;
 }
 
-.marketing-card h3{
+.sidebar-title{
 font-size:28px;
-color:#d4af37;
-margin-bottom:10px;
+color:#D4AF37;
+margin-bottom:20px;
+text-align:center;
 }
 
-.marketing-card p{
+.sidebar-menu{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.sidebar-item{
+background:#0b2f5c;
+padding:15px;
+border-radius:12px;
 font-size:18px;
+font-weight:bold;
+transition:0.3s;
+border:1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-item:hover{
+background:#D4AF37;
+color:#041C3A;
+transform:translateX(-5px);
+}
+
+.main-content{
+flex:1;
+}
+
+.hero{
+background:linear-gradient(135deg,#06264D,#0b2f5c);
+padding:50px;
+border-radius:25px;
+margin-bottom:30px;
+text-align:center;
+}
+
+.hero h1{
+font-size:55px;
+color:#D4AF37;
+margin-bottom:15px;
+}
+
+.hero p{
+font-size:24px;
 color:#ddd;
 }
 
-.products{
-padding:0 40px 80px;
+.products-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
 gap:25px;
 }
 
 .product-card{
-background:#072c65;
+background:#06264D;
 border-radius:20px;
 overflow:hidden;
-border:2px solid rgba(212,175,55,0.3);
+border:1px solid rgba(255,255,255,0.1);
 transition:0.3s;
 }
 
 .product-card:hover{
 transform:translateY(-8px);
-border-color:#d4af37;
+box-shadow:0 0 20px rgba(212,175,55,0.3);
 }
 
-.product-card img{
+.product-image{
 width:100%;
-height:250px;
+height:260px;
 object-fit:cover;
 }
 
-.product-info{
-padding:20px;
+.product-content{
+padding:18px;
 }
 
-.product-info h3{
-font-size:28px;
-color:#d4af37;
+.product-title{
+font-size:24px;
+font-weight:bold;
+color:#D4AF37;
 margin-bottom:10px;
 }
 
-.product-info p{
-font-size:18px;
-margin-bottom:15px;
-color:#ddd;
+.product-price{
+font-size:24px;
+font-weight:bold;
+margin-bottom:10px;
 }
 
-.price{
-font-size:26px;
-font-weight:bold;
-color:#fff;
+.product-description{
+font-size:16px;
+color:#ddd;
+line-height:1.7;
 margin-bottom:15px;
+}
+
+.rating{
+color:#FFD700;
+font-size:20px;
+margin-bottom:15px;
+}
+
+.product-buttons{
+display:flex;
+gap:10px;
+}
+
+.buy-btn,
+.details-btn{
+flex:1;
+padding:12px;
+border:none;
+border-radius:10px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
 }
 
 .buy-btn{
-width:100%;
-background:#d4af37;
-color:#001f4d;
-border:none;
-padding:14px;
+background:#D4AF37;
+color:#041C3A;
+}
+
+.details-btn{
+background:#0b2f5c;
+color:white;
+border:1px solid rgba(255,255,255,0.1);
+}
+
+.buy-btn:hover,
+.details-btn:hover{
+opacity:0.9;
+transform:translateY(-2px);
+}
+
+.add-product-btn{
+position:fixed;
+bottom:30px;
+left:30px;
+background:#D4AF37;
+color:#041C3A;
+padding:18px 25px;
+border-radius:15px;
 font-size:20px;
 font-weight:bold;
-border-radius:10px;
+box-shadow:0 0 20px rgba(0,0,0,0.3);
 cursor:pointer;
+z-index:999;
 }
 
 footer{
-background:#00285f;
-padding:30px;
+margin-top:50px;
+padding:25px;
 text-align:center;
-border-top:2px solid #d4af37;
-font-size:20px;
-color:#ddd;
+border-top:1px solid rgba(255,255,255,0.1);
+color:#bbb;
+}
+
+@media(max-width:1200px){
+
+.layout{
+flex-direction:column;
+}
+
+.right-sidebar,
+.left-sidebar{
+width:100%;
+position:relative;
+top:0;
+}
+
 }
 
 @media(max-width:768px){
 
-.logo{
-font-size:38px;
+.logo-text{
+font-size:32px;
 }
 
 .hero h1{
-font-size:45px;
+font-size:40px;
 }
 
 .hero p{
-font-size:22px;
+font-size:20px;
 }
 
-.search-box{
+.top-header{
 flex-direction:column;
-}
-
-.search-box button{
-padding:15px;
 }
 
 }
 
 </style>
+
 </head>
 
 <body>
 
 <header>
 
-<div class="logo">
-سوقنا
+<div class="top-header">
+
+<div class="logo-area">
+
+<div class="logo-icon">
+S
+</div>
+
+<div class="logo-text">
+Souqna
+</div>
+
 </div>
 
 <div class="header-buttons">
 
-<button onclick="window.location.href='login.html'">
-دخول
+<a href="login.html">
+<button class="header-btn">
+تسجيل دخول
 </button>
+</a>
 
-<button onclick="window.location.href='signup.html'">
-تسجيل
+<a href="signup.html">
+<button class="header-btn">
+إنشاء حساب
 </button>
+</a>
 
 </div>
 
-</header>
+</div>
 
-<section class="hero">
-
-<h1>
-أفضل المنتجات
-</h1>
-
-<p>
-تصفح آلاف المنتجات بسهولة
-</p>
+<div class="search-area">
 
 <div class="search-box">
 
-<input type="text" id="searchInput" placeholder="ابحث عن منتج...">
+<input type="text" placeholder="ابحث عن أي منتج...">
 
-<button onclick="searchProducts()">
+<button>
 بحث
 </button>
 
 </div>
 
-</section>
+</div>
 
-<h2 class="section-title">
-الأقسام الرئيسية
-</h2>
+</header>
 
-<div class="categories">
+<div class="layout">
+
+<div class="right-sidebar">
+
+<div class="sidebar-title">
+الأقسام
+</div>
+
+<div class="sidebar-menu">
 
 <a href="electronics.html">
-<div class="category-card">
-<h3>الإلكترونيات</h3>
-<p>
-جوالات - لابتوبات - سماعات - ساعات ذكية - كاميرات
-</p>
+<div class="sidebar-item">
+الأجهزة الإلكترونية
 </div>
 </a>
 
 <a href="fashion.html">
-<div class="category-card">
-<h3>الأزياء والموضة</h3>
-<p>
-رجالي - نسائي - أطفال - أحذية - شنط - إكسسوارات
-</p>
-</div>
-</a>
-
-<a href="home.html">
-<div class="category-card">
-<h3>البيت والمطبخ</h3>
-<p>
-أثاث - ديكور - أدوات منزلية - أجهزة مطبخ - مفروشات
-</p>
+<div class="sidebar-item">
+الأزياء والموضة
 </div>
 </a>
 
 <a href="beauty.html">
-<div class="category-card">
-<h3>الجمال والعناية الشخصية</h3>
-<p>
-مكياج - عناية بالبشرة - عطور - عناية بالشعر
-</p>
+<div class="sidebar-item">
+الجمال والعناية الشخصية
 </div>
 </a>
 
-<a href="sports.html">
-<div class="category-card">
-<h3>الصحة والرياضة</h3>
-<p>
-مكملات غذائية - معدات رياضية - أجهزة لياقة
-</p>
+<a href="vehicles.html">
+<div class="sidebar-item">
+المركبات
+</div>
+</a>
+
+<a href="home.html">
+<div class="sidebar-item">
+البيت والمطبخ
 </div>
 </a>
 
 <a href="baby.html">
-<div class="category-card">
-<h3>الأم والطفل</h3>
-<p>
-ألعاب - ملابس أطفال - مستلزمات حديثي الولادة
-</p>
-</div>
-</a>
-
-<a href="market.html">
-<div class="category-card">
-<h3>السوبر ماركت والمواد الغذائية</h3>
-<p>
-بقالة - مشروبات - وجبات خفيفة
-</p>
-</div>
-</a>
-
-<a href="books.html">
-<div class="category-card">
-<h3>الكتب والقرطاسية</h3>
-<p>
-كتب - أدوات مكتبية - أدوات فنية
-</p>
-</div>
-</a>
-
-<a href="cars.html">
-<div class="category-card">
-<h3>السيارات وقطع الغيار</h3>
-<p>
-إكسسوارات سيارات - زيوت - إطارات
-</p>
-</div>
-</a>
-
-<a href="pets.html">
-<div class="category-card">
-<h3>الحيوانات الأليفة</h3>
-<p>
-أكل - ألعاب - مستلزمات العناية
-</p>
+<div class="sidebar-item">
+الأم والطفل
 </div>
 </a>
 
 </div>
 
-<h2 class="section-title">
-أقسام تسويقية
-</h2>
+</div>
 
-<div class="marketing">
+<div class="main-content">
 
-<div class="marketing-card">
-<h3>الأكثر مبيعاً</h3>
+<div class="hero">
+
+<h1>
+أفضل سوق إلكتروني للبائعين
+</h1>
+
 <p>
-أفضل المنتجات طلباً
+اعرض منتجاتك وابدأ البيع بسهولة مثل أمازون
 </p>
-</div>
-
-<div class="marketing-card">
-<h3>عروض وخصومات</h3>
-<p>
-تخفيضات قوية يومية
-</p>
-</div>
-
-<div class="marketing-card">
-<h3>وصل حديثاً</h3>
-<p>
-منتجات جديدة باستمرار
-</p>
-</div>
-
-<div class="marketing-card">
-<h3>مميز / مختار لك</h3>
-<p>
-منتجات مقترحة خصيصاً لك
-</p>
-</div>
-
-<div class="marketing-card">
-<h3>تصفية المخزون</h3>
-<p>
-أسعار خاصة لفترة محدودة
-</p>
-</div>
 
 </div>
 
-<h2 class="section-title">
-أقسام حسب الاستخدام
-</h2>
-
-<div class="marketing">
-
-<div class="marketing-card">
-<h3>للطلاب</h3>
-<p>
-لابتوبات وأدوات دراسة
-</p>
-</div>
-
-<div class="marketing-card">
-<h3>للعمل</h3>
-<p>
-ملابس رسمية وأدوات مكتبية
-</p>
-</div>
-
-<div class="marketing-card">
-<h3>للمناسبات</h3>
-<p>
-هدايا وتجهيزات أفراح وأعياد
-</p>
-</div>
-
-<div class="marketing-card">
-<h3>للسفر</h3>
-<p>
-شنط سفر وإكسسوارات رحلات
-</p>
-</div>
-
-</div>
-
-<h2 class="section-title">
-منتجات مميزة
-</h2>
-
-<div class="products" id="productsContainer">
+<div class="products-grid">
 
 <div class="product-card">
 
-<img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200&auto=format&fit=crop" alt="جوال">
+<img class="product-image" src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200&auto=format&fit=crop">
 
-<div class="product-info">
+<div class="product-content">
 
-<h3>
+<div class="product-title">
 iPhone 15 Pro
-</h3>
+</div>
 
-<p>
-أحدث هواتف آيفون بمواصفات قوية
-</p>
-
-<div class="price">
+<div class="product-price">
 1200$
 </div>
 
+<div class="product-description">
+أحدث هواتف آبل بمواصفات احترافية وكاميرا قوية
+</div>
+
+<div class="rating">
+★★★★★
+</div>
+
+<div class="product-buttons">
+
 <button class="buy-btn">
-شراء الآن
+شراء
 </button>
+
+<a href="product-details.html" style="flex:1;">
+<button class="details-btn">
+التفاصيل
+</button>
+</a>
+
+</div>
 
 </div>
 
@@ -537,25 +509,39 @@ iPhone 15 Pro
 
 <div class="product-card">
 
-<img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=1200&auto=format&fit=crop" alt="ملابس">
+<img class="product-image" src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop">
 
-<div class="product-info">
+<div class="product-content">
 
-<h3>
-ملابس رجالية
-</h3>
+<div class="product-title">
+أزياء رجالية
+</div>
 
-<p>
-أحدث صيحات الموضة الرجالية
-</p>
-
-<div class="price">
+<div class="product-price">
 45$
 </div>
 
+<div class="product-description">
+ملابس رجالية عصرية بأفضل جودة
+</div>
+
+<div class="rating">
+★★★★☆
+</div>
+
+<div class="product-buttons">
+
 <button class="buy-btn">
-شراء الآن
+شراء
 </button>
+
+<a href="product-details.html" style="flex:1;">
+<button class="details-btn">
+التفاصيل
+</button>
+</a>
+
+</div>
 
 </div>
 
@@ -563,97 +549,146 @@ iPhone 15 Pro
 
 <div class="product-card">
 
-<img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1200&auto=format&fit=crop" alt="سماعات">
+<img class="product-image" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop">
 
-<div class="product-info">
+<div class="product-content">
 
-<h3>
-سماعات لاسلكية
-</h3>
-
-<p>
-صوت نقي وعزل احترافي
-</p>
-
-<div class="price">
-99$
+<div class="product-title">
+حذاء رياضي
 </div>
 
-<button class="buy-btn">
-شراء الآن
-</button>
-
-</div>
-
-</div>
-
-<div class="product-card">
-
-<img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop" alt="أحذية">
-
-<div class="product-info">
-
-<h3>
-أحذية رياضية
-</h3>
-
-<p>
-راحة وأناقة للجميع
-</p>
-
-<div class="price">
+<div class="product-price">
 70$
 </div>
 
+<div class="product-description">
+راحة وأناقة للمشي والرياضة
+</div>
+
+<div class="rating">
+★★★★★
+</div>
+
+<div class="product-buttons">
+
 <button class="buy-btn">
-شراء الآن
+شراء
 </button>
 
+<a href="product-details.html" style="flex:1;">
+<button class="details-btn">
+التفاصيل
+</button>
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="product-card">
+
+<img class="product-image" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1200&auto=format&fit=crop">
+
+<div class="product-content">
+
+<div class="product-title">
+سماعات لاسلكية
+</div>
+
+<div class="product-price">
+99$
+</div>
+
+<div class="product-description">
+صوت نقي وتقنية عزل الضوضاء
+</div>
+
+<div class="rating">
+★★★★★
+</div>
+
+<div class="product-buttons">
+
+<button class="buy-btn">
+شراء
+</button>
+
+<a href="product-details.html" style="flex:1;">
+<button class="details-btn">
+التفاصيل
+</button>
+</a>
+
+</div>
+
 </div>
 
 </div>
 
 </div>
+
+</div>
+
+<div class="left-sidebar">
+
+<div class="sidebar-title">
+الأقسام التسويقية
+</div>
+
+<div class="sidebar-menu">
+
+<a href="best-selling.html">
+<div class="sidebar-item">
+الأكثر مبيعاً
+</div>
+</a>
+
+<a href="offers.html">
+<div class="sidebar-item">
+عروض وخصومات
+</div>
+</a>
+
+<a href="new-arrivals.html">
+<div class="sidebar-item">
+وصل حديثاً
+</div>
+</a>
+
+<a href="clearance.html">
+<div class="sidebar-item">
+تصفية المخزون
+</div>
+</a>
+
+<a href="featured.html">
+<div class="sidebar-item">
+مميز / مختار لك
+</div>
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<a href="add-product.html">
+
+<div class="add-product-btn">
++ إضافة منتج
+</div>
+
+</a>
 
 <footer>
 
-جميع الحقوق محفوظة © سوقنا 2026
+جميع الحقوق محفوظة © Souqna 2026
 
 </footer>
 
-<script>
-
-function searchProducts(){
-
-let input =
-document.getElementById("searchInput")
-.value
-.toLowerCase();
-
-let products =
-document.querySelectorAll(".product-card");
-
-products.forEach(function(product){
-
-let text =
-product.innerText.toLowerCase();
-
-if(text.includes(input)){
-
-product.style.display = "block";
-
-}else{
-
-product.style.display = "none";
-
-}
-
-});
-
-}
-
-</script>
-
 </body>
+
 </html>
-```
