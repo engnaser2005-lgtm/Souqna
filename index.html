@@ -77,6 +77,8 @@ color:#D4AF37;
 .header-buttons{
 display:flex;
 gap:15px;
+align-items:center;
+flex-wrap:wrap;
 }
 
 .header-btn{
@@ -93,6 +95,32 @@ transition:0.3s;
 
 .header-btn:hover{
 transform:translateY(-3px);
+}
+
+.user-box{
+display:none;
+align-items:center;
+gap:10px;
+background:#0b2f5c;
+padding:10px 15px;
+border-radius:12px;
+border:1px solid rgba(255,255,255,0.1);
+}
+
+.user-name{
+font-size:18px;
+font-weight:bold;
+color:#D4AF37;
+}
+
+.logout-btn{
+background:#c0392b;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
 }
 
 .search-area{
@@ -379,19 +407,31 @@ Souqna
 
 </div>
 
-<div class="header-buttons">
+<div class="header-buttons" id="headerButtons">
 
-<a href="login.html">
+<a href="login.html" id="loginLink">
 <button class="header-btn">
 تسجيل دخول
 </button>
 </a>
 
-<a href="signup.html">
+<a href="signup.html" id="signupLink">
 <button class="header-btn">
 إنشاء حساب
 </button>
 </a>
+
+<div class="user-box" id="userBox">
+
+<div class="user-name" id="userName">
+مستخدم
+</div>
+
+<button class="logout-btn" onclick="logout()">
+تسجيل خروج
+</button>
+
+</div>
 
 </div>
 
@@ -547,13 +587,63 @@ const SUPABASE_URL =
 "https://dkhjaktcjbnndxtxcetf.supabase.co"
 
 const SUPABASE_KEY =
-"sb_publishable_Xuhcjef7xW1PFpSuVLmK8A_rFXBFcMd"
+"ضع_المفتاح_العام_هنا"
 
 const supabaseClient =
 supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
 )
+
+async function checkUser(){
+
+const {
+data:{session}
+} =
+await supabaseClient.auth.getSession()
+
+const loginLink =
+document.getElementById("loginLink")
+
+const signupLink =
+document.getElementById("signupLink")
+
+const userBox =
+document.getElementById("userBox")
+
+const userName =
+document.getElementById("userName")
+
+if(session){
+
+loginLink.style.display = "none"
+signupLink.style.display = "none"
+
+userBox.style.display = "flex"
+
+userName.innerText =
+session.user.email
+
+}else{
+
+loginLink.style.display = "block"
+signupLink.style.display = "block"
+
+userBox.style.display = "none"
+
+}
+
+}
+
+async function logout(){
+
+await supabaseClient.auth.signOut()
+
+alert("تم تسجيل الخروج")
+
+window.location.reload()
+
+}
 
 async function loadProducts(){
 
@@ -701,6 +791,8 @@ window.location.href =
 "add-product.html"
 
 }
+
+checkUser()
 
 loadProducts()
 
