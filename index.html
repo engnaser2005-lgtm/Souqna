@@ -10,6 +10,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 
 *{
@@ -18,82 +20,7 @@ padding:0;
 box-sizing:border-box;
 font-family:'Tajawal',sans-serif;
 }
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script src="supabase.js"></script>
-  <script>
-
-async function loadProducts(){
-
-const container =
-document.getElementById("products")
-
-const { data , error } =
-await supabase
-.from("products")
-.select("*")
-
-if(error){
-
-console.log(error)
-return
-
-}
-
-container.innerHTML = ""
-
-data.forEach(product=>{
-
-container.innerHTML += `
-
-<div class="product-card">
-
-<img class="product-image"
-src="${product.image}">
-
-<div class="product-content">
-
-<div class="product-title">
-${product.title}
-</div>
-
-<div class="product-price">
-${product.price} $
-</div>
-
-<div class="product-description">
-${product.description}
-</div>
-
-<div class="product-buttons">
-
-<button class="buy-btn">
-شراء
-</button>
-
-<a href="product-details.html">
-
-<button class="details-btn">
-التفاصيل
-</button>
-
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-`
-
-})
-
-}
-
-loadProducts()
-
-</script>
 body{
 background:#041C3A;
 color:white;
@@ -242,6 +169,7 @@ font-size:18px;
 font-weight:bold;
 transition:0.3s;
 border:1px solid rgba(255,255,255,0.1);
+text-align:center;
 }
 
 .sidebar-item:hover{
@@ -296,6 +224,7 @@ box-shadow:0 0 20px rgba(212,175,55,0.3);
 width:100%;
 height:260px;
 object-fit:cover;
+background:#0b2f5c;
 }
 
 .product-content{
@@ -385,6 +314,13 @@ border-top:1px solid rgba(255,255,255,0.1);
 color:#bbb;
 }
 
+.loading{
+text-align:center;
+font-size:30px;
+color:#D4AF37;
+padding:40px;
+}
+
 @media(max-width:1200px){
 
 .layout{
@@ -464,9 +400,9 @@ Souqna
 
 <div class="search-box">
 
-<input type="text" placeholder="ابحث عن أي منتج...">
+<input type="text" id="searchInput" placeholder="ابحث عن أي منتج...">
 
-<button>
+<button onclick="searchProducts()">
 بحث
 </button>
 
@@ -540,166 +476,10 @@ Souqna
 
 </div>
 
-<div class="products-grid" id="products"></div>
+<div class="products-grid" id="products">
 
-<div class="product-card">
-
-<img class="product-image" src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200&auto=format&fit=crop">
-
-<div class="product-content">
-
-<div class="product-title">
-iPhone 15 Pro
-</div>
-
-<div class="product-price">
-1200$
-</div>
-
-<div class="product-description">
-أحدث هواتف آبل بمواصفات احترافية وكاميرا قوية
-</div>
-
-<div class="rating">
-★★★★★
-</div>
-
-<div class="product-buttons">
-
-<button class="buy-btn">
-شراء
-</button>
-
-<a href="product-details.html" style="flex:1;">
-<button class="details-btn">
-التفاصيل
-</button>
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="product-card">
-
-<img class="product-image" src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop">
-
-<div class="product-content">
-
-<div class="product-title">
-أزياء رجالية
-</div>
-
-<div class="product-price">
-45$
-</div>
-
-<div class="product-description">
-ملابس رجالية عصرية بأفضل جودة
-</div>
-
-<div class="rating">
-★★★★☆
-</div>
-
-<div class="product-buttons">
-
-<button class="buy-btn">
-شراء
-</button>
-
-<a href="product-details.html" style="flex:1;">
-<button class="details-btn">
-التفاصيل
-</button>
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="product-card">
-
-<img class="product-image" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop">
-
-<div class="product-content">
-
-<div class="product-title">
-حذاء رياضي
-</div>
-
-<div class="product-price">
-70$
-</div>
-
-<div class="product-description">
-راحة وأناقة للمشي والرياضة
-</div>
-
-<div class="rating">
-★★★★★
-</div>
-
-<div class="product-buttons">
-
-<button class="buy-btn">
-شراء
-</button>
-
-<a href="product-details.html" style="flex:1;">
-<button class="details-btn">
-التفاصيل
-</button>
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="product-card">
-
-<img class="product-image" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1200&auto=format&fit=crop">
-
-<div class="product-content">
-
-<div class="product-title">
-سماعات لاسلكية
-</div>
-
-<div class="product-price">
-99$
-</div>
-
-<div class="product-description">
-صوت نقي وتقنية عزل الضوضاء
-</div>
-
-<div class="rating">
-★★★★★
-</div>
-
-<div class="product-buttons">
-
-<button class="buy-btn">
-شراء
-</button>
-
-<a href="product-details.html" style="flex:1;">
-<button class="details-btn">
-التفاصيل
-</button>
-</a>
-
-</div>
-
-</div>
-
+<div class="loading">
+جاري تحميل المنتجات...
 </div>
 
 </div>
@@ -763,6 +543,148 @@ iPhone 15 Pro
 جميع الحقوق محفوظة © Souqna 2026
 
 </footer>
+
+<script>
+
+const SUPABASE_URL = "https://dkhjaktcjbnndxtxcetf.supabase.co"
+
+const SUPABASE_KEY = "ضع_المفتاح_العام_هنا"
+
+const supabaseClient = supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+)
+
+async function loadProducts(){
+
+const container =
+document.getElementById("products")
+
+container.innerHTML =
+`<div class="loading">جاري تحميل المنتجات...</div>`
+
+const { data , error } =
+await supabaseClient
+.from("products")
+.select("*")
+.order("created_at",{ascending:false})
+
+if(error){
+
+console.log(error)
+
+container.innerHTML = `
+<div class="loading">
+فشل تحميل المنتجات
+</div>
+`
+
+return
+
+}
+
+if(!data || data.length === 0){
+
+container.innerHTML = `
+<div class="loading">
+لا توجد منتجات حالياً
+</div>
+`
+
+return
+
+}
+
+container.innerHTML = ""
+
+data.forEach(product=>{
+
+container.innerHTML += `
+
+<div class="product-card">
+
+<img class="product-image"
+src="${product.image}"
+onerror="this.src='https://via.placeholder.com/400x300?text=Souqna'">
+
+<div class="product-content">
+
+<div class="product-title">
+${product.title}
+</div>
+
+<div class="product-price">
+${product.price} $
+</div>
+
+<div class="product-description">
+${product.description}
+</div>
+
+<div class="rating">
+★★★★★
+</div>
+
+<div class="product-buttons">
+
+<button class="buy-btn">
+شراء
+</button>
+
+<a href="product-details.html" style="flex:1;">
+
+<button class="details-btn">
+التفاصيل
+</button>
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+`
+
+})
+
+}
+
+function searchProducts(){
+
+const input =
+document.getElementById("searchInput")
+
+const value =
+input.value.toLowerCase()
+
+const cards =
+document.querySelectorAll(".product-card")
+
+cards.forEach(card=>{
+
+const title =
+card.querySelector(".product-title")
+.innerText.toLowerCase()
+
+if(title.includes(value)){
+
+card.style.display = "block"
+
+}else{
+
+card.style.display = "none"
+
+}
+
+})
+
+}
+
+loadProducts()
+
+</script>
 
 </body>
 
