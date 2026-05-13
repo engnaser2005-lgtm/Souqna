@@ -1,63 +1,227 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>إنشاء حساب</title>
+
+<title>إنشاء حساب - Souqna</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Tajawal',sans-serif;
+}
+
 body{
 background:#041C3A;
-font-family:'Tajawal',sans-serif;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
-margin:0;
+color:white;
 }
-.form-box{
+
+.signup-container{
+width:450px;
+max-width:95%;
 background:#06264D;
 padding:40px;
-border-radius:20px;
-width:450px;
-color:white;
+border-radius:25px;
+border:1px solid rgba(255,255,255,0.1);
+box-shadow:0 0 25px rgba(0,0,0,0.3);
 }
-h1{
+
+.logo{
 text-align:center;
+font-size:45px;
+font-weight:900;
 color:#D4AF37;
+margin-bottom:10px;
 }
-input,select{
+
+.subtitle{
+text-align:center;
+color:#ddd;
+margin-bottom:30px;
+font-size:18px;
+}
+
+input{
 width:100%;
-padding:15px;
-margin-top:15px;
+padding:16px;
+margin-bottom:18px;
 border:none;
-border-radius:10px;
+border-radius:12px;
 background:#0b2f5c;
 color:white;
+font-size:17px;
+outline:none;
 }
+
+input::placeholder{
+color:#bbb;
+}
+
 button{
 width:100%;
-padding:15px;
-margin-top:20px;
-background:#D4AF37;
+padding:16px;
 border:none;
-border-radius:10px;
+border-radius:12px;
+background:#D4AF37;
+color:#041C3A;
+font-size:18px;
 font-weight:bold;
 cursor:pointer;
+transition:0.3s;
 }
+
+button:hover{
+opacity:0.9;
+transform:translateY(-2px);
+}
+
+.message{
+margin-top:20px;
+text-align:center;
+font-size:17px;
+}
+
+.login-link{
+margin-top:25px;
+text-align:center;
+font-size:17px;
+}
+
+.login-link a{
+color:#D4AF37;
+text-decoration:none;
+font-weight:bold;
+}
+
 </style>
+
 </head>
+
 <body>
-<div class="form-box">
-<h1>إنشاء حساب</h1>
-<input type="text" placeholder="الاسم الكامل">
-<input type="email" placeholder="البريد الإلكتروني">
-<input type="password" placeholder="كلمة المرور">
-<input type="text" placeholder="المدينة">
-<select>
-<option>مشتري</option>
-<option>بائع</option>
-</select>
-<button>إنشاء الحساب</button>
+
+<div class="signup-container">
+
+<div class="logo">
+Souqna
 </div>
+
+<div class="subtitle">
+إنشاء حساب جديد كبائع أو مشتري
+</div>
+
+<input type="text" id="name" placeholder="الاسم الكامل">
+
+<input type="email" id="email" placeholder="البريد الإلكتروني">
+
+<input type="password" id="password" placeholder="كلمة المرور">
+
+<button onclick="signup()">
+إنشاء حساب
+</button>
+
+<div class="message" id="message"></div>
+
+<div class="login-link">
+لديك حساب بالفعل؟
+<a href="login.html">
+تسجيل دخول
+</a>
+</div>
+
+</div>
+
+<script>
+
+const SUPABASE_URL =
+"https://dkhjaktcjbnndxtxcetf.supabase.co"
+
+const SUPABASE_KEY =
+"sb_publishable_Xuhcjef7xW1PFpSuVLmK8A_rFXBFcMd"
+
+const supabaseClient =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+)
+
+async function signup(){
+
+const name =
+document.getElementById("name").value
+
+const email =
+document.getElementById("email").value
+
+const password =
+document.getElementById("password").value
+
+const message =
+document.getElementById("message")
+
+if(!name || !email || !password){
+
+message.innerHTML =
+"يرجى تعبئة جميع الحقول"
+
+message.style.color = "orange"
+
+return
+
+}
+
+const { data , error } =
+await supabaseClient.auth.signUp({
+
+email:email,
+password:password,
+
+options:{
+data:{
+name:name
+}
+}
+
+})
+
+if(error){
+
+message.innerHTML = error.message
+message.style.color = "red"
+
+return
+
+}
+
+message.innerHTML =
+"تم إنشاء الحساب بنجاح"
+
+message.style.color = "lightgreen"
+
+setTimeout(()=>{
+
+window.location.href =
+"login.html"
+
+},2000)
+
+}
+
+</script>
+
+</body>
+
 </html>
