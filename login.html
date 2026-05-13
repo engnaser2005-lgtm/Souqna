@@ -1,4 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>تسجيل الدخول - Souqna</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Tajawal',sans-serif;
+}
+
+body{
+background:#041C3A;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+color:white;
+}
+
+.login-box{
+width:420px;
+background:#06264D;
+padding:40px;
+border-radius:25px;
+border:1px solid rgba(255,255,255,0.1);
+box-shadow:0 0 30px rgba(0,0,0,0.3);
+}
+
+.logo{
+text-align:center;
+font-size:45px;
+font-weight:900;
+color:#D4AF37;
+margin-bottom:30px;
+}
+
+.input-group{
+margin-bottom:20px;
+}
+
+.input-group label{
+display:block;
+margin-bottom:10px;
+font-size:18px;
+}
+
+.input-group input{
+width:100%;
+padding:15px;
+border:none;
+outline:none;
+border-radius:12px;
+background:#0b2f5c;
+color:white;
+font-size:18px;
+}
+
+.login-btn{
+width:100%;
+padding:15px;
+border:none;
+border-radius:12px;
+background:#D4AF37;
+color:#041C3A;
+font-size:20px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+.login-btn:hover{
+transform:translateY(-3px);
+}
+
+.signup-link{
+margin-top:20px;
+text-align:center;
+font-size:17px;
+}
+
+.signup-link a{
+color:#D4AF37;
+text-decoration:none;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="login-box">
+
+<div class="logo">
+Souqna
+</div>
+
+<div class="input-group">
+<label>البريد الإلكتروني</label>
+<input type="email" id="email">
+</div>
+
+<div class="input-group">
+<label>كلمة المرور</label>
+<input type="password" id="password">
+</div>
+
+<button class="login-btn" onclick="login()">
+تسجيل الدخول
+</button>
+
+<div class="signup-link">
+ليس لديك حساب؟
+<a href="signup.html">
+إنشاء حساب
+</a>
+</div>
+
+</div>
 
 <script>
 
@@ -6,7 +138,7 @@ const SUPABASE_URL =
 "https://dkhjaktcjbnndxtxcetf.supabase.co"
 
 const SUPABASE_KEY =
-"ضع_المفتاح_العام_هنا"
+"sb_publishable_Xuhcjef7xW1PFpSuVLmK8A_rFXBFcMd"
 
 const supabaseClient =
 supabase.createClient(
@@ -22,6 +154,13 @@ document.getElementById("email").value
 const password =
 document.getElementById("password").value
 
+if(!email || !password){
+
+alert("يرجى تعبئة جميع الحقول")
+return
+
+}
+
 const { data , error } =
 await supabaseClient.auth.signInWithPassword({
 
@@ -32,7 +171,7 @@ password: password
 
 if(error){
 
-alert("فشل تسجيل الدخول")
+alert("البريد أو كلمة المرور غير صحيحة")
 
 console.log(error)
 
@@ -47,3 +186,7 @@ window.location.href = "index.html"
 }
 
 </script>
+
+</body>
+
+</html>
