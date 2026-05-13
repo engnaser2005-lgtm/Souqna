@@ -217,4 +217,12 @@ await loadProducts()
 
 })
 
+supabaseClient.auth.onAuthStateChange(
+async (event, session)=>{
+
+await checkUser()
+
+}
+)
+
 </script>
