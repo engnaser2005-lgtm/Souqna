@@ -2,11 +2,8 @@
 <html lang="ar" dir="rtl">
 
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>استفسارات العملاء</title>
+<title>رسائل العملاء</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -15,48 +12,32 @@
 body{
 background:#041C3A;
 color:white;
-font-family:Tajawal,sans-serif;
+font-family:Tajawal;
 padding:30px;
 }
 
-h1{
-text-align:center;
-color:#D4AF37;
-margin-bottom:30px;
-}
-
-.message-card{
+.box{
 background:#06264D;
 padding:20px;
-margin-bottom:20px;
 border-radius:15px;
-}
-
-.message{
-margin-bottom:15px;
-font-size:18px;
+margin-bottom:20px;
 }
 
 textarea{
 width:100%;
 height:100px;
-background:#0b2f5c;
-color:white;
-border:1px solid #D4AF37;
-border-radius:10px;
 padding:10px;
+margin-top:10px;
 }
 
 button{
-margin-top:10px;
-padding:12px;
-width:100%;
 background:#D4AF37;
-color:#041C3A;
+padding:10px;
 border:none;
 border-radius:10px;
 font-weight:bold;
 cursor:pointer;
+margin-top:10px;
 }
 
 </style>
@@ -66,7 +47,7 @@ cursor:pointer;
 <body>
 
 <h1>
-استفسارات العملاء
+رسائل العملاء
 </h1>
 
 <div id="messages">
@@ -79,7 +60,7 @@ const SUPABASE_URL=
 "https://dkhjaktcjbnndxtxcetf.supabase.co"
 
 const SUPABASE_KEY=
-"sb_publishable_Xuhcjef7xW1PFpSuVLmK8A_rFXBFcMd"
+"ضع_المفتاح_نفسه"
 
 const supabaseClient=
 supabase.createClient(
@@ -93,20 +74,15 @@ const {
 data:{session}
 }
 =
-await supabaseClient
-.auth
-.getSession()
+await supabaseClient.auth.getSession()
 
 const sellerId=
 session.user.id
 
-const {
-data,
-error
-}
+const {data}
 =
 await supabaseClient
-.from("messages")
+.from("conversations")
 .select("*")
 .eq(
 "seller_id",
@@ -120,42 +96,23 @@ document.getElementById(
 
 container.innerHTML=""
 
-if(data.length===0){
-
-container.innerHTML=
-"لا توجد استفسارات"
-
-return
-
-}
-
-data.forEach(msg=>{
+data.forEach(item=>{
 
 container.innerHTML+=`
 
-<div class="message-card">
+<div class="box">
 
-<div class="message">
+رقم الاستعلام:
+${item.id}
 
-${msg.message}
-
-</div>
-
-<textarea
-id="reply-${msg.id}"
-placeholder="اكتب الرد">
-</textarea>
+<br><br>
 
 <button
 onclick="
-sendReply(
-'${msg.id}',
-'${msg.buyer_id}'
-)
+window.location=
+'inquiry.html?id=${item.id}'
 ">
-
-إرسال الرد
-
+فتح المحادثة
 </button>
 
 </div>
@@ -166,52 +123,9 @@ sendReply(
 
 }
 
-async function sendReply(
-messageId,
-buyerId
-){
-
-const text=
-document
-.getElementById(
-`reply-${messageId}`
-)
-.value
-
-const {
-data:{session}
-}
-=
-await supabaseClient
-.auth
-.getSession()
-
-const sellerId=
-session.user.id
-
-await supabaseClient
-.from("replies")
-.insert({
-
-message_id:messageId,
-seller_id:sellerId,
-buyer_id:buyerId,
-reply:text
-
-})
-
-alert(
-"تم إرسال الرد"
-)
-
-location.reload()
-
-}
-
 loadMessages()
 
 </script>
 
 </body>
-
 </html>
