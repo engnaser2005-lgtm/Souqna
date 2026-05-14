@@ -2,10 +2,12 @@
 <html lang="ar" dir="rtl">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>طلبات الشراء</title>
+<meta charset="UTF-8">
+
+<title>
+طلبات الشراء
+</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -14,33 +16,22 @@
 body{
 background:#041C3A;
 color:white;
-font-family:Tajawal,sans-serif;
+font-family:Tajawal;
 padding:30px;
 }
 
-.card{
+.order-box{
 background:#06264D;
 padding:20px;
-margin-bottom:20px;
 border-radius:15px;
+margin-bottom:20px;
 }
 
-select{
-width:100%;
-padding:12px;
-margin-top:10px;
-border-radius:10px;
-}
-
-button{
-width:100%;
-padding:12px;
-margin-top:10px;
-background:#D4AF37;
-border:none;
-border-radius:10px;
+.status{
+color:#D4AF37;
+font-size:18px;
 font-weight:bold;
-cursor:pointer;
+margin-top:10px;
 }
 
 </style>
@@ -59,10 +50,17 @@ cursor:pointer;
 
 <script>
 
+const SUPABASE_URL=
+"https://dkhjaktcjbnndxtxcetf.supabase.co"
+
+const SUPABASE_KEY=
+"sb_publishable_Xuhcjef7xW1PFpSuVLmK8A_rFXBFcMd"
+
+
 const supabaseClient=
 supabase.createClient(
-"https://dkhjaktcjbnndxtxcetf.supabase.co",
-"ضع نفس المفتاح"
+SUPABASE_URL,
+SUPABASE_KEY
 )
 
 async function loadOrders(){
@@ -73,11 +71,21 @@ data:{session}
 =
 await supabaseClient.auth.getSession()
 
+if(!session){
+
+window.location=
+"login.html"
+
+return
+
+}
+
 const sellerId=
 session.user.id
 
 const {
-data
+data,
+error
 }
 =
 await supabaseClient
@@ -87,6 +95,10 @@ await supabaseClient
 "seller_id",
 sellerId
 )
+.order(
+"created_at",
+{ascending:false}
+)
 
 const container=
 document.getElementById(
@@ -95,7 +107,7 @@ document.getElementById(
 
 container.innerHTML=""
 
-if(!data.length){
+if(!data || data.length===0){
 
 container.innerHTML=
 "لا توجد طلبات"
@@ -108,54 +120,22 @@ data.forEach(order=>{
 
 container.innerHTML+=`
 
-<div class="card">
+<div class="order-box">
 
-<p>
-رقم المنتج:
-${order.product_id}
-</p>
+رقم الطلب:
+${order.id}
 
-<p>
+<br><br>
+
 المبلغ:
-${order.amount}
-</p>
+${order.amount}$
 
-<select
-id="status-${order.id}"
->
+<div class="status">
 
-<option value="pending">
-طلب جديد
-</option>
+الحالة:
+${order.status}
 
-<option value="waiting_payment">
-قيد الدفع
-</option>
-
-<option value="paid">
-تم الدفع
-</option>
-
-<option value="delivered">
-تم التسليم
-</option>
-
-<option value="completed">
-انتهت العملية
-</option>
-
-</select>
-
-<button
-onclick="
-updateOrder(
-'${order.id}'
-)
-">
-
-حفظ الحالة
-
-</button>
+</div>
 
 </div>
 
@@ -165,30 +145,10 @@ updateOrder(
 
 }
 
-async function updateOrder(id){
-
-const status=
-document.getElementById(
-`status-${id}`
-).value
-
-await supabaseClient
-.from("orders")
-.update({
-status:status
-})
-.eq(
-"id",
-id
-)
-
-alert("تم تحديث الحالة")
-
-}
-
 loadOrders()
 
 </script>
 
 </body>
+
 </html>
