@@ -21,6 +21,7 @@ display:flex;
 justify-content:center;
 align-items:center;
 padding:50px;
+margin:0;
 }
 
 .form-box{
@@ -29,11 +30,13 @@ padding:40px;
 border-radius:20px;
 width:600px;
 color:white;
+box-shadow:0 0 20px rgba(0,0,0,.3);
 }
 
 h1{
 text-align:center;
 color:#D4AF37;
+margin-bottom:25px;
 }
 
 input,
@@ -46,17 +49,30 @@ border:none;
 border-radius:10px;
 background:#0b2f5c;
 color:white;
+font-size:16px;
+box-sizing:border-box;
+}
+
+textarea{
+height:120px;
+resize:none;
 }
 
 button{
 width:100%;
 padding:15px;
-margin-top:20px;
+margin-top:25px;
 background:#D4AF37;
+color:#041C3A;
 border:none;
 border-radius:10px;
+font-size:18px;
 font-weight:bold;
 cursor:pointer;
+}
+
+button:hover{
+opacity:.9;
 }
 
 </style>
@@ -73,21 +89,22 @@ cursor:pointer;
 
 <input
 type="text"
-placeholder="اسم المنتج"
-id="title">
+id="title"
+placeholder="اسم المنتج">
 
 <textarea
-placeholder="وصف المنتج"
-id="description">
+id="description"
+placeholder="وصف المنتج">
 </textarea>
 
 <input
 type="number"
-placeholder="السعر"
-id="price">
+id="price"
+placeholder="السعر">
 
 <input
-type="file">
+type="file"
+id="image">
 
 <select id="category">
 
@@ -135,9 +152,7 @@ SUPABASE_KEY
 )
 
 document
-.getElementById(
-"publishBtn"
-)
+.getElementById("publishBtn")
 .addEventListener(
 "click",
 addProduct
@@ -163,52 +178,110 @@ return
 
 }
 
-const title=
+const title =
 document
-.getElementById(
-"title"
-)
+.getElementById("title")
 .value
 
-const description=
+const description =
 document
-.getElementById(
-"description"
-)
+.getElementById("description")
 .value
 
-const price=
+const price =
 document
-.getElementById(
-"price"
-)
+.getElementById("price")
 .value
 
-const category=
+const category =
 document
-.getElementById(
-"category"
-)
+.getElementById("category")
 .value
 
-const sellerName=
-session.user.email
+const imageFile =
+document
+.getElementById("image")
+.files[0]
 
-const {error}
+if(
+!title ||
+!description ||
+!price
+){
+
+alert(
+"املأ جميع الحقول"
+)
+
+return
+
+}
+
+let imageUrl=""
+
+if(imageFile){
+
+const fileName =
+Date.now()+
+"-"+
+imageFile.name
+
+const {
+error:uploadError
+}
 =
 await supabaseClient
-.from(
-"products"
+.storage
+.from("products")
+.upload(
+fileName,
+imageFile
 )
+
+if(uploadError){
+
+console.log(uploadError)
+
+alert(
+"فشل رفع الصورة"
+)
+
+return
+
+}
+
+const {
+data
+}
+=
+supabaseClient
+.storage
+.from("products")
+.getPublicUrl(
+fileName
+)
+
+imageUrl =
+data.publicUrl
+
+}
+
+const {
+error
+}
+=
+await supabaseClient
+.from("products")
 .insert({
 
 title:title,
 description:description,
 price:price,
-image:"",
+image:imageUrl,
 category:category,
 stock:1,
-seller_name:sellerName
+seller_name:session.user.email,
+seller_id:session.user.id
 
 })
 
