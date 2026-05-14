@@ -8,6 +8,8 @@
 
 <title>Souqna - سوقنا</title>
 
+<link rel="icon" type="image/png" href="images/favicon.png">
+
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -63,9 +65,13 @@ border-radius:15px;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:28px;
-font-weight:bold;
-color:#041C3A;
+overflow:hidden;
+}
+
+.logo-icon img{
+width:100%;
+height:100%;
+object-fit:cover;
 }
 
 .logo-text{
@@ -77,6 +83,7 @@ color:#D4AF37;
 .header-buttons{
 display:flex;
 gap:15px;
+align-items:center;
 }
 
 .header-btn{
@@ -93,6 +100,17 @@ transition:0.3s;
 
 .header-btn:hover{
 transform:translateY(-3px);
+}
+
+.user-name{
+background:#0b2f5c;
+padding:12px 22px;
+border-radius:10px;
+font-size:18px;
+font-weight:bold;
+color:#D4AF37;
+border:1px solid rgba(255,255,255,0.1);
+display:none;
 }
 
 .search-area{
@@ -370,7 +388,9 @@ flex-direction:column;
 <div class="logo-area">
 
 <div class="logo-icon">
-S
+
+<img src="images/logo.png" alt="Souqna Logo">
+
 </div>
 
 <div class="logo-text">
@@ -379,19 +399,23 @@ Souqna
 
 </div>
 
-<div class="header-buttons">
+<div class="header-buttons" id="headerButtons">
 
-<a href="login.html">
+<a href="login.html" id="loginBtn">
 <button class="header-btn">
 تسجيل دخول
 </button>
 </a>
 
-<a href="signup.html">
+<a href="signup.html" id="signupBtn">
 <button class="header-btn">
 إنشاء حساب
 </button>
 </a>
+
+<div class="user-name" id="userName">
+المستخدم
+</div>
 
 </div>
 
@@ -702,7 +726,36 @@ window.location.href =
 
 }
 
+async function checkUserLogin(){
+
+const {
+data:{session}
+} =
+await supabaseClient.auth.getSession()
+
+if(session){
+
+document.getElementById("loginBtn").style.display = "none"
+
+document.getElementById("signupBtn").style.display = "none"
+
+const userName =
+session.user.email.split("@")[0]
+
+const userBox =
+document.getElementById("userName")
+
+userBox.style.display = "block"
+
+userBox.innerText = userName
+
+}
+
+}
+
 loadProducts()
+
+checkUserLogin()
 
 </script>
 
