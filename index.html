@@ -77,8 +77,6 @@ color:#D4AF37;
 .header-buttons{
 display:flex;
 gap:15px;
-align-items:center;
-flex-wrap:wrap;
 }
 
 .header-btn{
@@ -90,21 +88,11 @@ font-size:18px;
 font-weight:bold;
 border:none;
 cursor:pointer;
+transition:0.3s;
 }
 
-.user-box{
-display:none;
-align-items:center;
-gap:10px;
-}
-
-.logout-btn{
-background:#c0392b;
-color:white;
-padding:10px;
-border:none;
-border-radius:10px;
-cursor:pointer;
+.header-btn:hover{
+transform:translateY(-3px);
 }
 
 .search-area{
@@ -128,77 +116,245 @@ flex:1;
 padding:18px;
 font-size:18px;
 border:none;
+outline:none;
 background:transparent;
 color:white;
-outline:none;
 }
 
 .search-box button{
 background:#D4AF37;
+color:#041C3A;
 border:none;
-padding:15px;
+padding:0 25px;
+font-size:18px;
 font-weight:bold;
 cursor:pointer;
 }
 
-.hero{
+.layout{
+display:flex;
+padding:25px;
+gap:20px;
+}
+
+.right-sidebar,
+.left-sidebar{
+width:240px;
 background:#06264D;
-padding:50px;
-margin:25px;
-border-radius:25px;
+padding:20px;
+border-radius:20px;
+height:fit-content;
+position:sticky;
+top:130px;
+}
+
+.sidebar-title{
+font-size:28px;
+color:#D4AF37;
+margin-bottom:20px;
 text-align:center;
+}
+
+.sidebar-menu{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.sidebar-item{
+background:#0b2f5c;
+padding:15px;
+border-radius:12px;
+font-size:18px;
+font-weight:bold;
+transition:0.3s;
+border:1px solid rgba(255,255,255,0.1);
+text-align:center;
+}
+
+.sidebar-item:hover{
+background:#D4AF37;
+color:#041C3A;
+transform:translateX(-5px);
+}
+
+.main-content{
+flex:1;
+}
+
+.hero{
+background:linear-gradient(135deg,#06264D,#0b2f5c);
+padding:50px;
+border-radius:25px;
+margin-bottom:30px;
+text-align:center;
+}
+
+.hero h1{
+font-size:55px;
+color:#D4AF37;
+margin-bottom:15px;
+}
+
+.hero p{
+font-size:24px;
+color:#ddd;
 }
 
 .products-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
 gap:25px;
-padding:25px;
 }
 
 .product-card{
 background:#06264D;
 border-radius:20px;
 overflow:hidden;
+border:1px solid rgba(255,255,255,0.1);
+transition:0.3s;
+}
+
+.product-card:hover{
+transform:translateY(-8px);
+box-shadow:0 0 20px rgba(212,175,55,0.3);
 }
 
 .product-image{
 width:100%;
-height:250px;
+height:260px;
 object-fit:cover;
+background:#0b2f5c;
 }
 
 .product-content{
-padding:15px;
+padding:18px;
 }
 
 .product-title{
 font-size:24px;
+font-weight:bold;
 color:#D4AF37;
 margin-bottom:10px;
 }
 
 .product-price{
-font-size:22px;
+font-size:24px;
+font-weight:bold;
 margin-bottom:10px;
+}
+
+.product-description{
+font-size:16px;
+color:#ddd;
+line-height:1.7;
+margin-bottom:15px;
+}
+
+.rating{
+color:#FFD700;
+font-size:20px;
+margin-bottom:15px;
+}
+
+.product-buttons{
+display:flex;
+gap:10px;
+}
+
+.buy-btn,
+.details-btn{
+flex:1;
+padding:12px;
+border:none;
+border-radius:10px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+.buy-btn{
+background:#D4AF37;
+color:#041C3A;
+}
+
+.details-btn{
+background:#0b2f5c;
+color:white;
+border:1px solid rgba(255,255,255,0.1);
+}
+
+.buy-btn:hover,
+.details-btn:hover{
+opacity:0.9;
+transform:translateY(-2px);
+}
+
+.add-product-btn{
+position:fixed;
+bottom:30px;
+left:30px;
+background:#D4AF37;
+color:#041C3A;
+padding:18px 25px;
+border-radius:15px;
+font-size:20px;
+font-weight:bold;
+box-shadow:0 0 20px rgba(0,0,0,0.3);
+cursor:pointer;
+z-index:999;
+border:none;
+}
+
+footer{
+margin-top:50px;
+padding:25px;
+text-align:center;
+border-top:1px solid rgba(255,255,255,0.1);
+color:#bbb;
 }
 
 .loading{
 text-align:center;
 font-size:30px;
+color:#D4AF37;
 padding:40px;
 }
 
-.add-product-btn{
-position:fixed;
-bottom:20px;
-left:20px;
-padding:15px 20px;
-background:#D4AF37;
-border:none;
-border-radius:12px;
-font-weight:bold;
-cursor:pointer;
+@media(max-width:1200px){
+
+.layout{
+flex-direction:column;
+}
+
+.right-sidebar,
+.left-sidebar{
+width:100%;
+position:relative;
+top:0;
+}
+
+}
+
+@media(max-width:768px){
+
+.logo-text{
+font-size:32px;
+}
+
+.hero h1{
+font-size:40px;
+}
+
+.hero p{
+font-size:20px;
+}
+
+.top-header{
+flex-direction:column;
+}
+
 }
 
 </style>
@@ -213,7 +369,9 @@ cursor:pointer;
 
 <div class="logo-area">
 
-<div class="logo-icon">S</div>
+<div class="logo-icon">
+S
+</div>
 
 <div class="logo-text">
 Souqna
@@ -223,27 +381,17 @@ Souqna
 
 <div class="header-buttons">
 
-<a id="loginLink" href="login.html">
+<a href="login.html">
 <button class="header-btn">
 تسجيل دخول
 </button>
 </a>
 
-<a id="signupLink" href="signup.html">
+<a href="signup.html">
 <button class="header-btn">
 إنشاء حساب
 </button>
 </a>
-
-<div class="user-box" id="userBox">
-
-<div id="userName"></div>
-
-<button class="logout-btn" onclick="logout()">
-خروج
-</button>
-
-</div>
 
 </div>
 
@@ -253,37 +401,11 @@ Souqna
 
 <div class="search-box">
 
-<input
-id="searchInput"
-placeholder="ابحث عن منتج">
+<input type="text" id="searchInput" placeholder="ابحث عن أي منتج...">
 
 <button onclick="searchProducts()">
 بحث
 </button>
-
-</div>
-
-</div>
-
-</header>
-
-<div class="hero">
-
-<h1>
-أفضل سوق إلكتروني للبائعين
-</h1>
-
-<p>
-اعرض منتجاتك وابدأ البيع بسهولة
-</p>
-
-</div>
-
-<div class="products-grid" id="products">
-
-<div class="loading">
-جاري تحميل المنتجات...
-</div>
 
 </div>
 
@@ -409,106 +531,39 @@ placeholder="ابحث عن منتج">
 
 </div>
 
-</div>
-
-<button
-class="add-product-btn" onclick="checkSeller()">
-
+<button class="add-product-btn" onclick="checkSeller()">
 + إضافة منتج
-
 </button>
+
 <footer>
 
 جميع الحقوق محفوظة © Souqna 2026
 
 </footer>
+
 <script>
 
-const SUPABASE_URL=
+const SUPABASE_URL =
 "https://dkhjaktcjbnndxtxcetf.supabase.co"
 
-const SUPABASE_KEY=
+const SUPABASE_KEY =
 "sb_publishable_Xuhcjef7xW1PFpSuVLmK8A_rFXBFcMd"
 
-const supabaseClient=
+const supabaseClient =
 supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
 )
 
-async function checkUser(){
 async function loadProducts(){
 
 const container =
 document.getElementById("products")
 
 container.innerHTML =
-`<div class="loading">جاري تحميل المنتجات...</div>
-const {
-data:{session}
-}
-=
-await supabaseClient.auth.getSession()
-
-const loginLink=
-document.getElementById("loginLink")
-
-const signupLink=
-document.getElementById("signupLink")
-
-const userBox=
-document.getElementById("userBox")
-
-const userName=
-document.getElementById("userName")
-
-if(session&&session.user){
-
-if(loginLink)
-loginLink.style.display="none"
-
-if(signupLink)
-signupLink.style.display="none"
-
-if(userBox)
-userBox.style.display="flex"
-
-if(userName)
-userName.innerText=
-session.user.email
-
-}else{
-
-if(loginLink)
-loginLink.style.display="block"
-
-if(signupLink)
-signupLink.style.display="block"
-
-if(userBox)
-userBox.style.display="none"
-
-}
-
-}
-
-async function logout(){
-
-await supabaseClient.auth.signOut()
-
-location.reload()
-
-}
-
-async function loadProducts(){
-
-const container=
-document.getElementById("products")
-
-container.innerHTML=
 `<div class="loading">جاري تحميل المنتجات...</div>`
 
-const {data,error}=
+const { data , error } =
 await supabaseClient
 .from("products")
 .select("*")
@@ -516,45 +571,73 @@ await supabaseClient
 
 if(error){
 
-container.innerHTML=
+console.log(error)
+
+container.innerHTML =
 `<div class="loading">
 فشل تحميل المنتجات
 </div>`
 
 return
+
 }
 
-if(!data||data.length===0){
+if(!data || data.length === 0){
 
-container.innerHTML=
+container.innerHTML =
 `<div class="loading">
-لا توجد منتجات
+لا توجد منتجات حالياً
 </div>`
 
 return
 
 }
 
-container.innerHTML=""
+container.innerHTML = ""
 
 data.forEach(product=>{
 
-container.innerHTML+=`
+container.innerHTML += `
 
 <div class="product-card">
 
 <img
 class="product-image"
-src="${product.image||'https://via.placeholder.com/400'}">
+src="${product.image}"
+onerror="this.src='https://via.placeholder.com/400x300?text=Souqna'">
 
 <div class="product-content">
 
 <div class="product-title">
-${product.title||product.name}
+${product.title}
 </div>
 
 <div class="product-price">
-${product.price} ريال
+${product.price} $
+</div>
+
+<div class="product-description">
+${product.description}
+</div>
+
+<div class="rating">
+★★★★★
+</div>
+
+<div class="product-buttons">
+
+<button class="buy-btn">
+شراء
+</button>
+
+<a href="product-details.html" style="flex:1;">
+
+<button class="details-btn">
+التفاصيل
+</button>
+
+</a>
+
 </div>
 
 </div>
@@ -569,28 +652,30 @@ ${product.price} ريال
 
 function searchProducts(){
 
-const value=
-document
-.getElementById("searchInput")
-.value
-.toLowerCase()
+const input =
+document.getElementById("searchInput")
 
-document
-.querySelectorAll(".product-card")
-.forEach(card=>{
+const value =
+input.value.toLowerCase()
 
-const title=
-card
-.querySelector(".product-title")
-.innerText
-.toLowerCase()
+const cards =
+document.querySelectorAll(".product-card")
 
-card.style.display=
-title.includes(value)
-?
-"block"
-:
-"none"
+cards.forEach(card=>{
+
+const title =
+card.querySelector(".product-title")
+.innerText.toLowerCase()
+
+if(title.includes(value)){
+
+card.style.display = "block"
+
+}else{
+
+card.style.display = "none"
+
+}
 
 })
 
@@ -600,43 +685,27 @@ async function checkSeller(){
 
 const {
 data:{session}
-}
-=
+} =
 await supabaseClient.auth.getSession()
 
 if(!session){
 
-window.location.href=
-"login.html"
+window.location.href =
+"signup.html"
 
 return
 
 }
 
-window.location.href=
+window.location.href =
 "add-product.html"
 
 }
 
-window.addEventListener(
-"load",
-async()=>{
-
-await checkUser()
-await loadProducts()
-
-}
-)
-
-supabaseClient.auth.onAuthStateChange(
-async()=>{
-
-await checkUser()
-
-}
-)
+loadProducts()
 
 </script>
 
 </body>
+
 </html>
