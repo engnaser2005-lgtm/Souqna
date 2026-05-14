@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>إضافة منتج</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
+
 body{
 background:#041C3A;
 font-family:'Tajawal',sans-serif;
@@ -14,6 +22,7 @@ justify-content:center;
 align-items:center;
 padding:50px;
 }
+
 .form-box{
 background:#06264D;
 padding:40px;
@@ -21,11 +30,15 @@ border-radius:20px;
 width:600px;
 color:white;
 }
+
 h1{
 text-align:center;
 color:#D4AF37;
 }
-input,textarea,select{
+
+input,
+textarea,
+select{
 width:100%;
 padding:15px;
 margin-top:15px;
@@ -34,6 +47,7 @@ border-radius:10px;
 background:#0b2f5c;
 color:white;
 }
+
 button{
 width:100%;
 padding:15px;
@@ -44,22 +58,182 @@ border-radius:10px;
 font-weight:bold;
 cursor:pointer;
 }
+
 </style>
+
 </head>
+
 <body>
+
 <div class="form-box">
-<h1>إضافة منتج</h1>
-<input type="text" placeholder="اسم المنتج">
-<textarea placeholder="وصف المنتج"></textarea>
-<input type="number" placeholder="السعر">
-<input type="file">
-<select>
-<option>الأجهزة الإلكترونية</option>
-<option>الأزياء والموضة</option>
-<option>المركبات</option>
-<option>البيت والمطبخ</option>
-<option>الأم والطفل</option>
+
+<h1>
+إضافة منتج
+</h1>
+
+<input
+type="text"
+placeholder="اسم المنتج"
+id="title">
+
+<textarea
+placeholder="وصف المنتج"
+id="description">
+</textarea>
+
+<input
+type="number"
+placeholder="السعر"
+id="price">
+
+<input
+type="file">
+
+<select id="category">
+
+<option>
+الأجهزة الإلكترونية
+</option>
+
+<option>
+الأزياء والموضة
+</option>
+
+<option>
+المركبات
+</option>
+
+<option>
+البيت والمطبخ
+</option>
+
+<option>
+الأم والطفل
+</option>
+
 </select>
-<button>نشر المنتج</button>
+
+<button id="publishBtn">
+نشر المنتج
+</button>
+
 </div>
+
+
+<script>
+
+const SUPABASE_URL =
+"https://dkhjaktcjbnndxtxcetf.supabase.co"
+
+const SUPABASE_KEY =
+"ضع هنا نفس المفتاح الموجود في index"
+
+const supabaseClient =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+)
+
+document
+.getElementById(
+"publishBtn"
+)
+.addEventListener(
+"click",
+addProduct
+)
+
+async function addProduct(){
+
+const {
+data:{session}
+}
+=
+await supabaseClient
+.auth
+.getSession()
+
+if(!session){
+
+alert(
+"يجب تسجيل الدخول"
+)
+
+return
+
+}
+
+const title=
+document
+.getElementById(
+"title"
+)
+.value
+
+const description=
+document
+.getElementById(
+"description"
+)
+.value
+
+const price=
+document
+.getElementById(
+"price"
+)
+.value
+
+const category=
+document
+.getElementById(
+"category"
+)
+.value
+
+const sellerName=
+session.user.email
+
+const {error}
+=
+await supabaseClient
+.from(
+"products"
+)
+.insert({
+
+title:title,
+description:description,
+price:price,
+image:"",
+category:category,
+stock:1,
+seller_name:sellerName
+
+})
+
+if(error){
+
+console.log(error)
+
+alert(
+error.message
+)
+
+return
+
+}
+
+alert(
+"تم نشر المنتج بنجاح"
+)
+
+window.location.href=
+"index.html"
+
+}
+
+</script>
+
+</body>
 </html>
