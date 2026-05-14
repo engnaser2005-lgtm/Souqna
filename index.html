@@ -650,19 +650,27 @@ ${product.description}
 
 <div class="product-buttons">
 
-<button class="buy-btn">
+<button
+class="buy-btn"
+onclick="buyProduct(
+'${product.id}',
+'${product.seller_id}',
+'${product.price}'
+)">
 شراء
 </button>
 
-<a href="product-details.html" style="flex:1;">
-
-<button class="details-btn">
-التفاصيل
+<button
+class="details-btn"
+onclick="openInquiry(
+'${product.id}',
+'${product.seller_id}'
+)">
+استعلام
 </button>
 
-</a>
-
 </div>
+
 
 </div>
 
@@ -750,6 +758,137 @@ userBox.style.display = "block"
 userBox.innerText = userName
 
 }
+
+}
+async function openInquiry(
+productId,
+sellerId
+){
+
+const {
+data:{session}
+}
+=
+await supabaseClient.auth.getSession()
+
+if(!session){
+
+window.location.href=
+"login.html"
+
+return
+
+}
+
+localStorage.setItem(
+"productId",
+productId
+)
+
+localStorage.setItem(
+"sellerId",
+sellerId
+)
+
+window.location.href=
+"inquiry.html"
+
+}
+
+
+
+async function buyProduct(
+productId,
+sellerId,
+price
+){
+
+const {
+data:{session}
+}
+=
+await supabaseClient.auth.getSession()
+
+if(!session){
+
+window.location.href=
+"login.html"
+
+return
+
+}
+async function sendInquiry(message){
+
+const {
+data:{session}
+}
+=
+await supabaseClient.auth.getSession()
+
+const buyerId=
+session.user.id
+
+const productId=
+localStorage.getItem("productId")
+
+const sellerId=
+localStorage.getItem("sellerId")
+
+const {error}
+=
+await supabaseClient
+.from("messages")
+.insert({
+
+product_id:productId,
+buyer_id:buyerId,
+seller_id:sellerId,
+message:message
+
+})
+
+if(error){
+
+alert("فشل إرسال الرسالة")
+
+return
+
+}
+
+alert("تم إرسال الاستعلام")
+
+}
+const buyerId=
+session.user.id
+const {error}
+=
+await supabaseClient
+.from("orders")
+.insert({
+
+product_id:productId,
+buyer_id:buyerId,
+seller_id:sellerId,
+amount:price,
+status:"pending",
+created_at:new Date()
+
+})
+
+if(error){
+
+console.log(error)
+
+alert(
+"فشل إرسال الطلب"
+)
+
+return
+
+}
+alert(
+"تم إرسال طلب الشراء بنجاح"
+)
 
 }
 
