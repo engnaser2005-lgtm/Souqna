@@ -796,7 +796,6 @@ window.location.href=
 }
 
 
-
 async function buyProduct(
 productId,
 sellerId,
@@ -817,6 +816,44 @@ window.location.href=
 return
 
 }
+
+const buyerId=
+session.user.id
+
+const {error}
+=
+await supabaseClient
+.from("orders")
+.insert({
+
+product_id:productId,
+buyer_id:buyerId,
+seller_id:sellerId,
+quantity:1,
+amount:price,
+payment_status:"pending",
+order_status:"pending_payment"
+
+})
+
+if(error){
+
+console.log(error)
+
+alert(
+"فشل إرسال الطلب"
+)
+
+return
+
+}
+
+window.location.href=
+"payment.html?order="+productId
+
+}
+
+
 async function sendInquiry(message){
 
 const {
@@ -829,10 +866,14 @@ const buyerId=
 session.user.id
 
 const productId=
-localStorage.getItem("productId")
+localStorage.getItem(
+"productId"
+)
 
 const sellerId=
-localStorage.getItem("sellerId")
+localStorage.getItem(
+"sellerId"
+)
 
 const {error}
 =
@@ -849,45 +890,16 @@ message:message
 
 if(error){
 
-alert("فشل إرسال الرسالة")
-
-return
-
-}
-
-alert("تم إرسال الاستعلام")
-
-}
-const buyerId=
-session.user.id
-const {error}
-=
-await supabaseClient
-.from("orders")
-.insert({
-
-product_id:productId,
-buyer_id:buyerId,
-seller_id:sellerId,
-amount:price,
-status:"pending",
-created_at:new Date()
-
-})
-
-if(error){
-
-console.log(error)
-
 alert(
-"فشل إرسال الطلب"
+"فشل إرسال الرسالة"
 )
 
 return
 
 }
+
 alert(
-"تم إرسال طلب الشراء بنجاح"
+"تم إرسال الاستعلام"
 )
 
 }
