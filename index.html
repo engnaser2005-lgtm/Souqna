@@ -603,8 +603,8 @@ container.innerHTML += `
 
 <img
 class="product-image"
-src="${product.image}"
-onerror="this.src='https://via.placeholder.com/400x300?text=Souqna'">
+src="${product.image || 'images/default-product.png'}"
+onerror="this.onerror=null;this.src='images/default-product.png';">
 
 <div class="product-content">
 
