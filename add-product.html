@@ -75,6 +75,11 @@ button:hover{
 opacity:.9;
 }
 
+button:disabled{
+opacity:.6;
+cursor:not-allowed;
+}
+
 </style>
 
 </head>
@@ -136,7 +141,6 @@ id="image">
 
 </div>
 
-
 <script>
 
 const SUPABASE_URL =
@@ -160,52 +164,59 @@ addProduct
 
 async function addProduct(){
 
+const btn=
+document.getElementById(
+"publishBtn"
+)
+
+btn.disabled=true
+btn.innerText="جاري النشر..."
+
 const {
 data:{session}
 }
 =
-await supabaseClient
-.auth
-.getSession()
+await supabaseClient.auth.getSession()
 
 if(!session){
 
-alert(
-"يجب تسجيل الدخول"
-)
+alert("يجب تسجيل الدخول")
+
+btn.disabled=false
+btn.innerText="نشر المنتج"
 
 return
 
 }
 
-const title =
-document
-.getElementById("title")
-.value
+const title=
+document.getElementById(
+"title"
+).value
 
-const description =
-document
-.getElementById("description")
-.value
+const description=
+document.getElementById(
+"description"
+).value
 
-const price =
-document
-.getElementById("price")
-.value
+const price=
+document.getElementById(
+"price"
+).value
 
-const category =
-document
-.getElementById("category")
-.value
+const category=
+document.getElementById(
+"category"
+).value
 
-const imageFile =
-document
-.getElementById("image")
-.files[0]
+const imageFile=
+document.querySelector(
+'input[type="file"]'
+).files[0]
 
 if(
-!title ||
-!description ||
+!title||
+!description||
 !price
 ){
 
@@ -213,18 +224,22 @@ alert(
 "املأ جميع الحقول"
 )
 
+btn.disabled=false
+btn.innerText="نشر المنتج"
+
 return
 
 }
+
+const sellerName=
+session.user.email
 
 let imageUrl=""
 
 if(imageFile){
 
-const fileName =
-Date.now()+
-"-"+
-imageFile.name
+const fileName=
+Date.now()+"-"+imageFile.name
 
 const {
 error:uploadError
@@ -240,18 +255,19 @@ imageFile
 
 if(uploadError){
 
-console.log(uploadError)
-
 alert(
 "فشل رفع الصورة"
 )
+
+btn.disabled=false
+btn.innerText="نشر المنتج"
 
 return
 
 }
 
 const {
-data
+data:imageData
 }
 =
 supabaseClient
@@ -261,12 +277,13 @@ supabaseClient
 fileName
 )
 
-imageUrl =
-data.publicUrl
+imageUrl=
+imageData.publicUrl
 
 }
 
 const {
+data,
 error
 }
 =
@@ -280,10 +297,11 @@ price:price,
 image:imageUrl,
 category:category,
 stock:1,
-seller_name:session.user.email,
+seller_name:sellerName,
 seller_id:session.user.id
 
 })
+.select()
 
 if(error){
 
@@ -293,16 +311,18 @@ alert(
 error.message
 )
 
+btn.disabled=false
+btn.innerText="نشر المنتج"
+
 return
 
 }
 
-alert(
-"تم نشر المنتج بنجاح"
-)
+const productId=
+data[0].id
 
 window.location.href=
-"index.html"
+"product-details.html?id="+productId
 
 }
 
