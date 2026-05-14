@@ -412,13 +412,16 @@ placeholder="ابحث عن منتج">
 </div>
 
 <button
-class="add-product-btn"
-onclick="checkSeller()">
+class="add-product-btn" onclick="checkSeller()">
 
 + إضافة منتج
 
 </button>
+<footer>
 
+جميع الحقوق محفوظة © Souqna 2026
+
+</footer>
 <script>
 
 const SUPABASE_URL=
@@ -434,7 +437,13 @@ SUPABASE_KEY
 )
 
 async function checkUser(){
+async function loadProducts(){
 
+const container =
+document.getElementById("products")
+
+container.innerHTML =
+`<div class="loading">جاري تحميل المنتجات...</div>
 const {
 data:{session}
 }
