@@ -1,14 +1,309 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Souqna - سوقنا</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Tajawal',sans-serif;
+}
+
+body{
+background:#041C3A;
+color:white;
+overflow-x:hidden;
+}
+
+a{
+text-decoration:none;
+color:white;
+}
+
+header{
+background:#02152d;
+border-bottom:2px solid #D4AF37;
+padding:15px 25px;
+position:sticky;
+top:0;
+z-index:999;
+}
+
+.top-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+gap:20px;
+}
+
+.logo-area{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.logo-icon{
+width:60px;
+height:60px;
+background:#D4AF37;
+border-radius:15px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+font-weight:bold;
+color:#041C3A;
+}
+
+.logo-text{
+font-size:42px;
+font-weight:900;
+color:#D4AF37;
+}
+
+.header-buttons{
+display:flex;
+gap:15px;
+align-items:center;
+flex-wrap:wrap;
+}
+
+.header-btn{
+background:#D4AF37;
+color:#041C3A;
+padding:12px 22px;
+border-radius:10px;
+font-size:18px;
+font-weight:bold;
+border:none;
+cursor:pointer;
+}
+
+.user-box{
+display:none;
+align-items:center;
+gap:10px;
+}
+
+.logout-btn{
+background:#c0392b;
+color:white;
+padding:10px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+}
+
+.search-area{
+margin-top:20px;
+display:flex;
+justify-content:center;
+}
+
+.search-box{
+width:700px;
+max-width:100%;
+display:flex;
+background:#0b2f5c;
+border:2px solid #D4AF37;
+border-radius:15px;
+overflow:hidden;
+}
+
+.search-box input{
+flex:1;
+padding:18px;
+font-size:18px;
+border:none;
+background:transparent;
+color:white;
+outline:none;
+}
+
+.search-box button{
+background:#D4AF37;
+border:none;
+padding:15px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.hero{
+background:#06264D;
+padding:50px;
+margin:25px;
+border-radius:25px;
+text-align:center;
+}
+
+.products-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:25px;
+padding:25px;
+}
+
+.product-card{
+background:#06264D;
+border-radius:20px;
+overflow:hidden;
+}
+
+.product-image{
+width:100%;
+height:250px;
+object-fit:cover;
+}
+
+.product-content{
+padding:15px;
+}
+
+.product-title{
+font-size:24px;
+color:#D4AF37;
+margin-bottom:10px;
+}
+
+.product-price{
+font-size:22px;
+margin-bottom:10px;
+}
+
+.loading{
+text-align:center;
+font-size:30px;
+padding:40px;
+}
+
+.add-product-btn{
+position:fixed;
+bottom:20px;
+left:20px;
+padding:15px 20px;
+background:#D4AF37;
+border:none;
+border-radius:12px;
+font-weight:bold;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="top-header">
+
+<div class="logo-area">
+
+<div class="logo-icon">S</div>
+
+<div class="logo-text">
+Souqna
+</div>
+
+</div>
+
+<div class="header-buttons">
+
+<a id="loginLink" href="login.html">
+<button class="header-btn">
+تسجيل دخول
+</button>
+</a>
+
+<a id="signupLink" href="signup.html">
+<button class="header-btn">
+إنشاء حساب
+</button>
+</a>
+
+<div class="user-box" id="userBox">
+
+<div id="userName"></div>
+
+<button class="logout-btn" onclick="logout()">
+خروج
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="search-area">
+
+<div class="search-box">
+
+<input
+id="searchInput"
+placeholder="ابحث عن منتج">
+
+<button onclick="searchProducts()">
+بحث
+</button>
+
+</div>
+
+</div>
+
+</header>
+
+<div class="hero">
+
+<h1>
+أفضل سوق إلكتروني للبائعين
+</h1>
+
+<p>
+اعرض منتجاتك وابدأ البيع بسهولة
+</p>
+
+</div>
+
+<div class="products-grid" id="products">
+
+<div class="loading">
+جاري تحميل المنتجات...
+</div>
+
+</div>
+
+<button
+class="add-product-btn"
+onclick="checkSeller()">
+
++ إضافة منتج
+
+</button>
 
 <script>
 
-const SUPABASE_URL =
+const SUPABASE_URL=
 "https://dkhjaktcjbnndxtxcetf.supabase.co"
 
-const SUPABASE_KEY =
-"ضع_هنا_المفتاح_العام_الحقيقي"
+const SUPABASE_KEY=
+"sb_publishable_Xuhcjef7xW1PFpSuVLmK8A_rFXBFcMd"
 
-const supabaseClient =
+const supabaseClient=
 supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
@@ -18,37 +313,47 @@ async function checkUser(){
 
 const {
 data:{session}
-} =
+}
+=
 await supabaseClient.auth.getSession()
 
-const loginLink =
+const loginLink=
 document.getElementById("loginLink")
 
-const signupLink =
+const signupLink=
 document.getElementById("signupLink")
 
-const userBox =
+const userBox=
 document.getElementById("userBox")
 
-const userName =
+const userName=
 document.getElementById("userName")
 
-if(session && session.user){
+if(session&&session.user){
 
-loginLink.style.display = "none"
-signupLink.style.display = "none"
+if(loginLink)
+loginLink.style.display="none"
 
-userBox.style.display = "flex"
+if(signupLink)
+signupLink.style.display="none"
 
-userName.innerText =
+if(userBox)
+userBox.style.display="flex"
+
+if(userName)
+userName.innerText=
 session.user.email
 
 }else{
 
-loginLink.style.display = "block"
-signupLink.style.display = "block"
+if(loginLink)
+loginLink.style.display="block"
 
-userBox.style.display = "none"
+if(signupLink)
+signupLink.style.display="block"
+
+if(userBox)
+userBox.style.display="none"
 
 }
 
@@ -58,21 +363,19 @@ async function logout(){
 
 await supabaseClient.auth.signOut()
 
-alert("تم تسجيل الخروج")
-
-window.location.href = "index.html"
+location.reload()
 
 }
 
 async function loadProducts(){
 
-const container =
+const container=
 document.getElementById("products")
 
-container.innerHTML =
+container.innerHTML=
 `<div class="loading">جاري تحميل المنتجات...</div>`
 
-const { data , error } =
+const {data,error}=
 await supabaseClient
 .from("products")
 .select("*")
@@ -80,73 +383,45 @@ await supabaseClient
 
 if(error){
 
-console.log(error)
-
-container.innerHTML =
+container.innerHTML=
 `<div class="loading">
 فشل تحميل المنتجات
 </div>`
 
 return
-
 }
 
-if(!data || data.length === 0){
+if(!data||data.length===0){
 
-container.innerHTML =
+container.innerHTML=
 `<div class="loading">
-لا توجد منتجات حالياً
+لا توجد منتجات
 </div>`
 
 return
 
 }
 
-container.innerHTML = ""
+container.innerHTML=""
 
 data.forEach(product=>{
 
-container.innerHTML += `
+container.innerHTML+=`
 
 <div class="product-card">
 
 <img
 class="product-image"
-src="${product.image}"
-onerror="this.src='https://via.placeholder.com/400x300?text=Souqna'">
+src="${product.image||'https://via.placeholder.com/400'}">
 
 <div class="product-content">
 
 <div class="product-title">
-${product.title}
+${product.title||product.name}
 </div>
 
 <div class="product-price">
-${product.price} $
-</div>
-
-<div class="product-description">
-${product.description}
-</div>
-
-<div class="rating">
-★★★★★
-</div>
-
-<div class="product-buttons">
-
-<button class="buy-btn">
-شراء
-</button>
-
-<a href="product-details.html" style="flex:1;">
-
-<button class="details-btn">
-التفاصيل
-</button>
-
-</a>
-
+${product.price} ريال
 </div>
 
 </div>
@@ -161,30 +436,28 @@ ${product.description}
 
 function searchProducts(){
 
-const input =
-document.getElementById("searchInput")
+const value=
+document
+.getElementById("searchInput")
+.value
+.toLowerCase()
 
-const value =
-input.value.toLowerCase()
+document
+.querySelectorAll(".product-card")
+.forEach(card=>{
 
-const cards =
-document.querySelectorAll(".product-card")
+const title=
+card
+.querySelector(".product-title")
+.innerText
+.toLowerCase()
 
-cards.forEach(card=>{
-
-const title =
-card.querySelector(".product-title")
-.innerText.toLowerCase()
-
-if(title.includes(value)){
-
-card.style.display = "block"
-
-}else{
-
-card.style.display = "none"
-
-}
+card.style.display=
+title.includes(value)
+?
+"block"
+:
+"none"
 
 })
 
@@ -194,33 +467,36 @@ async function checkSeller(){
 
 const {
 data:{session}
-} =
+}
+=
 await supabaseClient.auth.getSession()
 
 if(!session){
 
-window.location.href =
+window.location.href=
 "login.html"
 
 return
 
 }
 
-window.location.href =
+window.location.href=
 "add-product.html"
 
 }
 
-window.addEventListener("load", async ()=>{
+window.addEventListener(
+"load",
+async()=>{
 
 await checkUser()
-
 await loadProducts()
 
-})
+}
+)
 
 supabaseClient.auth.onAuthStateChange(
-async (event, session)=>{
+async()=>{
 
 await checkUser()
 
@@ -228,3 +504,6 @@ await checkUser()
 )
 
 </script>
+
+</body>
+</html>
