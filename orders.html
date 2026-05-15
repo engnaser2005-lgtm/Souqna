@@ -105,6 +105,17 @@ const container=
 document.getElementById("orders")
 
 const {
+data:{session}
+}
+=
+await supabaseClient
+.auth
+.getSession()
+
+const userId=
+session.user.id
+
+const {
 data,
 error
 }
@@ -112,6 +123,9 @@ error
 await supabaseClient
 .from("orders")
 .select("*")
+.or(
+`buyer_id.eq.${userId},seller_id.eq.${userId}`
+)
 .order(
 "created_at",
 {ascending:false}
