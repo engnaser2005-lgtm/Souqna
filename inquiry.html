@@ -46,6 +46,8 @@ padding:15px;
 border:none;
 border-radius:10px;
 margin-bottom:15px;
+color:white;
+background:#163d70;
 }
 
 button{
@@ -154,7 +156,10 @@ buyerId
 
 if(error){
 
-console.log(error)
+console.log(
+"conversation error",
+error
+)
 
 }
 
@@ -184,9 +189,14 @@ seller_id:sellerId
 
 if(insertError){
 
-console.log(insertError)
+console.log(
+"insert conversation error",
+insertError
+)
 
-alert("فشل إنشاء المحادثة")
+alert(
+insertError.message
+)
 
 return
 
@@ -196,6 +206,11 @@ conversationId=
 newConversation.id
 
 }
+
+console.log(
+"conversationId",
+conversationId
+)
 
 loadMessages()
 
@@ -224,7 +239,10 @@ conversationId
 
 if(error){
 
-console.log(error)
+console.log(
+"load messages error",
+error
+)
 
 return
 
@@ -284,11 +302,27 @@ return
 const text=
 document.getElementById(
 "messageInput"
-).value
+).value.trim()
 
 if(!text)return
 
+console.log(
+"conversationId:",
+conversationId
+)
+
+console.log(
+"sender:",
+session.user.id
+)
+
+console.log(
+"text:",
+text
+)
+
 const {
+data,
 error
 }
 =
@@ -306,16 +340,27 @@ message:
 text
 
 })
+.select()
 
 if(error){
 
-console.log(error)
+console.log(
+"send message error",
+error
+)
 
-alert("فشل إرسال الرسالة")
+alert(
+error.message
+)
 
 return
 
 }
+
+console.log(
+"message inserted",
+data
+)
 
 document.getElementById(
 "messageInput"
@@ -328,7 +373,9 @@ loadMessages()
 initConversation()
 
 setInterval(()=>{
+
 loadMessages()
+
 },3000)
 
 </script>
