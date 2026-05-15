@@ -833,13 +833,12 @@ product_id:productId,
 buyer_id:buyerId,
 seller_id:sellerId,
 quantity:1,
-amount:price,
-payment_status:"pending",
-order_status:"pending_payment"
+total_price:price,
+payment_status:"pending"
 
 })
 .select()
-
+  
 if(error){
 
 console.log(error)
