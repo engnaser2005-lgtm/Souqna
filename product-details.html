@@ -34,15 +34,19 @@ gap:30px;
 img{
 width:100%;
 border-radius:20px;
+object-fit:cover;
 }
 
 h1{
 color:#D4AF37;
+margin-top:0;
 }
 
 .price{
 font-size:30px;
 margin:20px 0;
+font-weight:bold;
+color:#D4AF37;
 }
 
 button{
@@ -52,10 +56,13 @@ border-radius:10px;
 font-weight:bold;
 margin-left:10px;
 cursor:pointer;
+font-family:'Tajawal',sans-serif;
+font-size:16px;
 }
 
 .buy{
 background:#D4AF37;
+color:#041C3A;
 }
 
 .whatsapp{
@@ -67,6 +74,23 @@ color:white;
 text-align:center;
 font-size:25px;
 padding:40px;
+}
+
+.description{
+line-height:2;
+color:#E5E5E5;
+}
+
+@media(max-width:768px){
+
+.container{
+grid-template-columns:1fr;
+}
+
+body{
+padding:20px;
+}
+
 }
 
 </style>
@@ -125,10 +149,12 @@ error
 await supabaseClient
 .from("products")
 .select("*")
-.eq("id",productId)
+.eq("id", productId)
 .single()
 
 if(error || !data){
+
+console.error(error)
 
 container.innerHTML =
 "فشل تحميل المنتج"
@@ -136,6 +162,33 @@ container.innerHTML =
 return
 
 }
+
+/*
+تصحيح الحقول حسب جدول المنتجات الحقيقي:
+
+image بدلاً من image_url
+title بدلاً من name
+seller_id بدلاً من user_id
+*/
+
+const productImage =
+data.image ||
+"images/default-product.png"
+
+const productTitle =
+data.title ||
+"بدون عنوان"
+
+const productDescription =
+data.description ||
+"لا يوجد وصف للمنتج"
+
+const productPrice =
+data.price ||
+0
+
+const sellerId =
+data.seller_id || ""
 
 container.innerHTML =
 
@@ -146,7 +199,8 @@ container.innerHTML =
 <div>
 
 <img
-src="${data.image}"
+src="${productImage}"
+alt="${productTitle}"
 onerror="this.src='images/default-product.png'"
 >
 
@@ -155,22 +209,25 @@ onerror="this.src='images/default-product.png'"
 <div>
 
 <h1>
-${data.title}
+${productTitle}
 </h1>
 
-<p>
-${data.description}
+<p class="description">
+${productDescription}
 </p>
 
 <div class="price">
-${data.price} $
+${productPrice} $
 </div>
 
 <button class="buy">
 طلب شراء
 </button>
 
-<a href="https://wa.me/967000000000">
+<a
+href="https://wa.me/967000000000?text=مرحباً، أريد الاستفسار عن المنتج: ${encodeURIComponent(productTitle)}"
+target="_blank"
+>
 
 <button class="whatsapp">
 استعلام واتساب
@@ -184,6 +241,11 @@ ${data.price} $
 
 <p>
 ★★★★★
+</p>
+
+<p>
+رقم البائع:
+${sellerId}
 </p>
 
 </div>
