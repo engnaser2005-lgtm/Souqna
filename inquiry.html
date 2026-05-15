@@ -2,8 +2,17 @@
 <html lang="ar" dir="rtl">
 
 <head>
+
 <meta charset="UTF-8">
-<title>الاستعلام</title>
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+استفسارات البائع
+</title>
+
+<link rel="icon" href="data:,">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -11,64 +20,92 @@
 
 body{
 background:#041C3A;
-color:white;
 font-family:Tajawal;
-padding:30px;
 margin:0;
+padding:30px;
+color:white;
 }
 
-.box{
-max-width:800px;
-margin:auto;
+.title{
+font-size:32px;
+font-weight:bold;
+margin-bottom:25px;
+color:#D4AF37;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.badge{
+background:#D4AF37;
+color:#041C3A;
+padding:8px 15px;
+border-radius:30px;
+font-size:15px;
+font-weight:bold;
+}
+
+#list{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.item{
 background:#06264D;
 padding:20px;
-border-radius:20px;
-}
-
-.messages{
-height:400px;
-overflow:auto;
-background:#0b2f5c;
-padding:20px;
 border-radius:15px;
-margin-bottom:20px;
-}
-
-.message{
-background:#163d70;
-padding:12px;
-border-radius:10px;
-margin-bottom:10px;
-line-height:1.7;
-}
-
-.my-message{
-background:#D4AF37;
-color:#041C3A;
-}
-
-input{
-width:100%;
-padding:15px;
-border:none;
-border-radius:10px;
-margin-bottom:15px;
-color:white;
-background:#163d70;
-box-sizing:border-box;
-font-size:16px;
-}
-
-button{
-width:100%;
-padding:15px;
-background:#D4AF37;
-border:none;
-font-size:18px;
-font-weight:bold;
 cursor:pointer;
-border-radius:10px;
+transition:.2s;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.item:hover{
+transform:translateY(-3px);
+background:#0b2f5c;
+}
+
+.product{
+font-size:20px;
+font-weight:bold;
+margin-bottom:10px;
+color:#D4AF37;
+}
+
+.text{
+font-size:15px;
+opacity:.9;
+line-height:1.8;
+}
+
+.time{
+margin-top:10px;
+font-size:13px;
+opacity:.6;
+}
+
+.count{
+margin-top:12px;
+display:inline-block;
+background:#D4AF37;
 color:#041C3A;
+padding:6px 12px;
+border-radius:30px;
+font-size:13px;
+font-weight:bold;
+}
+
+a{
+text-decoration:none;
+color:white;
+}
+
+.empty{
+background:#06264D;
+padding:30px;
+border-radius:15px;
+text-align:center;
+font-size:18px;
 }
 
 </style>
@@ -77,29 +114,23 @@ color:#041C3A;
 
 <body>
 
-<div class="box">
+<div class="title">
 
-<h2>
-استعلام عن المنتج
-</h2>
+<span>
+استفسارات العملاء
+</span>
 
-<div
-class="messages"
-id="messages">
-</div>
+<span
+class="badge"
+id="totalCount">
 
-<input
-id="messageInput"
-placeholder="اكتب سؤالك">
+0
 
-<button
-onclick="sendMessage()">
-
-إرسال
-
-</button>
+</span>
 
 </div>
+
+<div id="list"></div>
 
 <script>
 
@@ -115,38 +146,7 @@ SUPABASE_URL,
 SUPABASE_KEY
 )
 
-const params =
-new URLSearchParams(
-window.location.search
-)
-
-const urlConversationId =
-params.get(
-"conversation_id"
-)
-
-const productId =
-localStorage.getItem(
-"productId"
-)
-
-const sellerId =
-localStorage.getItem(
-"sellerId"
-)
-
-let conversationId =
-urlConversationId || ""
-
-async function initConversation(){
-
-if(conversationId){
-
-loadMessages()
-
-return
-
-}
+async function loadConversations(){
 
 const {
 data:{session}
@@ -162,123 +162,40 @@ return
 
 }
 
-const buyerId =
+const sellerId =
 session.user.id
 
 const {
-data:conversation,
+data,
 error
 }
 =
 await supabaseClient
 .from("conversations")
-.select("*")
-.eq(
-"product_id",
-productId
+.select(`
+*,
+products(
+title
+),
+messages(
+id,
+message,
+created_at
 )
+`)
 .eq(
-"buyer_id",
-buyerId
+"seller_id",
+sellerId
 )
-.maybeSingle()
+.order(
+"created_at",
+{ascending:false}
+)
 
 if(error){
 
 console.log(
 "conversation error",
-error
-)
-
-}
-
-if(conversation){
-
-conversationId =
-conversation.id
-
-}else{
-
-const {
-data:newConversation,
-error:insertError
-}
-=
-await supabaseClient
-.from("conversations")
-.insert({
-
-product_id:productId,
-buyer_id:buyerId,
-seller_id:sellerId
-
-})
-.select()
-.single()
-
-if(insertError){
-
-console.log(
-"insert conversation error",
-insertError
-)
-
-alert(
-insertError.message
-)
-
-return
-
-}
-
-conversationId =
-newConversation.id
-
-}
-
-console.log(
-"conversationId",
-conversationId
-)
-
-loadMessages()
-
-}
-
-async function loadMessages(){
-
-if(!conversationId)return
-
-const {
-data:{session}
-}
-=
-await supabaseClient.auth.getSession()
-
-const currentUser =
-session?.user?.id
-
-const {
-data:messages,
-error
-}
-=
-await supabaseClient
-.from("messages")
-.select("*")
-.eq(
-"conversation_id",
-conversationId
-)
-.order(
-"created_at",
-{ascending:true}
-)
-
-if(error){
-
-console.log(
-"load messages error",
 error
 )
 
@@ -288,144 +205,129 @@ return
 
 const container =
 document.getElementById(
-"messages"
+"list"
 )
 
 container.innerHTML = ""
 
-if(!messages || !messages.length){
+document.getElementById(
+"totalCount"
+).innerText =
+data?.length || 0
 
-container.innerHTML =
-"لا توجد رسائل بعد"
+if(!data || !data.length){
 
-return
+container.innerHTML = `
 
-}
+<div class="empty">
 
-messages.forEach(msg=>{
-
-const isMine =
-msg.sender_id === currentUser
-
-container.innerHTML += `
-
-<div class="message ${isMine ? 'my-message' : ''}">
-
-${msg.message}
+لا توجد استفسارات حالياً
 
 </div>
 
 `
 
+return
+
+}
+
+data.forEach(conv=>{
+
+const lastMessage =
+conv.messages?.length
+? conv.messages[
+conv.messages.length - 1
+].message
+: "لا توجد رسائل"
+
+const totalMessages =
+conv.messages?.length || 0
+
+container.innerHTML += `
+
+<a href="
+chat.html?conversation_id=${conv.id}
+">
+
+<div class="item">
+
+<div class="product">
+
+${conv.products?.title || "منتج"}
+
+</div>
+
+<div class="text">
+
+آخر رسالة:
+${lastMessage}
+
+</div>
+
+<div class="count">
+
+عدد الرسائل:
+${totalMessages}
+
+</div>
+
+<div class="time">
+
+${new Date(conv.created_at)
+.toLocaleString("ar-EG")}
+
+</div>
+
+</div>
+
+</a>
+
+`
+
 })
 
-container.scrollTop =
-container.scrollHeight
-
 }
 
-async function sendMessage(){
+loadConversations()
 
-const {
-data:{session}
-}
-=
-await supabaseClient.auth.getSession()
-
-if(!session){
-
-alert("يجب تسجيل الدخول")
-
-return
-
-}
-
-if(!conversationId){
-
-alert("لم يتم إنشاء المحادثة")
-
-return
-
-}
-
-const text =
-document.getElementById(
-"messageInput"
-).value.trim()
-
-if(!text)return
+supabaseClient
+.channel("seller-realtime")
+.on(
+"postgres_changes",
+{
+event:"INSERT",
+schema:"public",
+table:"messages"
+},
+payload=>{
 
 console.log(
-"conversationId:",
-conversationId
+"new message",
+payload
 )
 
-console.log(
-"sender:",
-session.user.id
+loadConversations()
+
+if(Notification.permission==="granted"){
+
+new Notification(
+"رسالة جديدة"
 )
-
-console.log(
-"text:",
-text
-)
-
-const {
-data,
-error
-}
-=
-await supabaseClient
-.from("messages")
-.insert({
-
-conversation_id:
-conversationId,
-
-sender_id:
-session.user.id,
-
-message:
-text
-
-})
-.select()
-
-if(error){
-
-console.log(
-"send message error",
-error
-)
-
-alert(
-error.message
-)
-
-return
 
 }
 
-console.log(
-"message inserted",
-data
+}
 )
+.subscribe()
 
-document.getElementById(
-"messageInput"
-).value = ""
+if(
+Notification.permission !==
+"granted"
+){
 
-loadMessages()
+Notification.requestPermission()
 
 }
-
-initConversation()
-
-setInterval(()=>{
-
-loadMessages()
-
-},3000)
 
 </script>
 
