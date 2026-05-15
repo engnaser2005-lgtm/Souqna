@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>رفع إثبات الدفع</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Tajawal',sans-serif;
+}
+
+body{
+background:#041C3A;
+color:white;
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:30px;
+}
+
+.card{
+
+width:700px;
+max-width:100%;
+
+background:#06264D;
+
+padding:40px;
+
+border-radius:25px;
+
+border:1px solid rgba(255,255,255,.1);
+
+text-align:center;
+
+}
+
+h1{
+
+color:#D4AF37;
+margin-bottom:20px;
+
+}
+
+p{
+
+margin-bottom:25px;
+color:#ddd;
+
+}
+
+input{
+
+width:100%;
+padding:15px;
+border-radius:10px;
+margin-bottom:20px;
+background:#0b2f5c;
+border:none;
+color:white;
+
+}
+
+button{
+
+background:#D4AF37;
+color:#041C3A;
+
+padding:15px 30px;
+
+border:none;
+border-radius:10px;
+
+font-size:18px;
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+button:hover{
+
+opacity:.9;
+
+}
+
+#status{
+
+margin-top:20px;
+font-size:18px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>
+رفع إثبات التحويل
+</h1>
+
+<p>
+ارفع صورة الحوالة أو إشعار التحويل
+</p>
+
+<input
+type="file"
+id="paymentImage"
+accept="image/*"
+>
+
+<button onclick="uploadPayment()">
+
+رفع الإثبات
+
+</button>
+
+<div id="status"></div>
+
+</div>
+
+<script>
+
+const SUPABASE_URL=
+"https://dkhjaktcjbnndxtxcetf.supabase.co"
+
+const SUPABASE_KEY=
+"sb_publishable_Xuhcjef7xW1PFpSuVLmK8A_rFXBFcMd"
+
+const supabaseClient=
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+)
+
+const params=
+new URLSearchParams(
+window.location.search
+)
+
+const orderId=
+params.get("order")
+
+async function uploadPayment(){
+
+const status=
+document.getElementById("status")
+
+const file=
+document.getElementById("paymentImage")
+.files[0]
+
+if(!file){
+
+alert(
+"اختر صورة"
+)
+
+return
+
+}
+
+status.innerHTML=
+"جاري رفع الصورة..."
+
+const fileName=
+Date.now()+"_"+file.name
+
+const {
+
+error:uploadError
+
+}
+=
+await supabaseClient
+.storage
+.from("payments")
+.upload(
+
+fileName,
+file
+
+)
+
+if(uploadError){
+
+console.log(uploadError)
+
+status.innerHTML=
+"فشل رفع الصورة"
+
+return
+
+}
+
+const {
+
+data:urlData
+
+}
+=
+supabaseClient
+.storage
+.from("payments")
+.getPublicUrl(
+fileName
+)
+
+const imageUrl=
+urlData.publicUrl
+
+const {
+
+error:updateError
+
+}
+=
+await supabaseClient
+.from("orders")
+.update({
+
+payment_image:imageUrl,
+
+payment_status:"uploaded"
+
+})
+.eq(
+"id",
+orderId
+)
+
+if(updateError){
+
+console.log(updateError)
+
+status.innerHTML=
+"فشل تحديث الطلب"
+
+return
+
+}
+
+status.innerHTML=
+"تم رفع إثبات التحويل بنجاح"
+
+setTimeout(()=>{
+
+window.location.href=
+"index.html"
+
+},2000)
+
+}
+
+</script>
+
+</body>
+
+</html>
