@@ -14,6 +14,7 @@ background:#041C3A;
 color:white;
 font-family:Tajawal;
 padding:30px;
+margin:0;
 }
 
 .box{
@@ -38,6 +39,12 @@ background:#163d70;
 padding:12px;
 border-radius:10px;
 margin-bottom:10px;
+line-height:1.7;
+}
+
+.my-message{
+background:#D4AF37;
+color:#041C3A;
 }
 
 input{
@@ -48,6 +55,8 @@ border-radius:10px;
 margin-bottom:15px;
 color:white;
 background:#163d70;
+box-sizing:border-box;
+font-size:16px;
 }
 
 button{
@@ -59,6 +68,7 @@ font-size:18px;
 font-weight:bold;
 cursor:pointer;
 border-radius:10px;
+color:#041C3A;
 }
 
 </style>
@@ -93,31 +103,50 @@ onclick="sendMessage()">
 
 <script>
 
-const SUPABASE_URL=
+const SUPABASE_URL =
 "https://dkhjaktcjbnndxtxcetf.supabase.co"
 
-const SUPABASE_KEY=
+const SUPABASE_KEY =
 "sb_publishable_Xuhcjef7xW1PFpSuVLmK8A_rFXBFcMd"
 
-const supabaseClient=
+const supabaseClient =
 supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
 )
 
-const productId=
+const params =
+new URLSearchParams(
+window.location.search
+)
+
+const urlConversationId =
+params.get(
+"conversation_id"
+)
+
+const productId =
 localStorage.getItem(
 "productId"
 )
 
-const sellerId=
+const sellerId =
 localStorage.getItem(
 "sellerId"
 )
 
-let conversationId=""
+let conversationId =
+urlConversationId || ""
 
 async function initConversation(){
+
+if(conversationId){
+
+loadMessages()
+
+return
+
+}
 
 const {
 data:{session}
@@ -133,7 +162,7 @@ return
 
 }
 
-const buyerId=
+const buyerId =
 session.user.id
 
 const {
@@ -165,7 +194,7 @@ error
 
 if(conversation){
 
-conversationId=
+conversationId =
 conversation.id
 
 }else{
@@ -202,7 +231,7 @@ return
 
 }
 
-conversationId=
+conversationId =
 newConversation.id
 
 }
@@ -219,6 +248,15 @@ loadMessages()
 async function loadMessages(){
 
 if(!conversationId)return
+
+const {
+data:{session}
+}
+=
+await supabaseClient.auth.getSession()
+
+const currentUser =
+session?.user?.id
 
 const {
 data:messages,
@@ -248,16 +286,16 @@ return
 
 }
 
-const container=
+const container =
 document.getElementById(
 "messages"
 )
 
-container.innerHTML=""
+container.innerHTML = ""
 
 if(!messages || !messages.length){
 
-container.innerHTML=
+container.innerHTML =
 "لا توجد رسائل بعد"
 
 return
@@ -266,9 +304,12 @@ return
 
 messages.forEach(msg=>{
 
-container.innerHTML+=`
+const isMine =
+msg.sender_id === currentUser
 
-<div class="message">
+container.innerHTML += `
+
+<div class="message ${isMine ? 'my-message' : ''}">
 
 ${msg.message}
 
@@ -278,7 +319,7 @@ ${msg.message}
 
 })
 
-container.scrollTop=
+container.scrollTop =
 container.scrollHeight
 
 }
@@ -299,7 +340,15 @@ return
 
 }
 
-const text=
+if(!conversationId){
+
+alert("لم يتم إنشاء المحادثة")
+
+return
+
+}
+
+const text =
 document.getElementById(
 "messageInput"
 ).value.trim()
@@ -364,7 +413,7 @@ data
 
 document.getElementById(
 "messageInput"
-).value=""
+).value = ""
 
 loadMessages()
 
