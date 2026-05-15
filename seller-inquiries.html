@@ -61,6 +61,7 @@ color:#D4AF37;
 .text{
 font-size:15px;
 opacity:.9;
+line-height:1.7;
 }
 
 .time{
@@ -136,7 +137,11 @@ await supabaseClient
 .from("conversations")
 .select(`
 *,
-products(title)
+products(title),
+messages(
+message,
+created_at
+)
 `)
 .eq(
 "seller_id",
@@ -178,6 +183,11 @@ return
 
 data.forEach(conv=>{
 
+const lastMessage =
+conv.messages?.length
+? conv.messages[conv.messages.length - 1].message
+: "لا توجد رسائل"
+
 container.innerHTML += `
 
 <a href="
@@ -194,7 +204,8 @@ ${conv.products?.title || "منتج"}
 
 <div class="text">
 
-يوجد استفسار جديد على هذا المنتج
+آخر رسالة:
+${lastMessage}
 
 </div>
 
@@ -218,7 +229,9 @@ ${new Date(conv.created_at)
 loadConversations()
 
 setInterval(()=>{
+
 loadConversations()
+
 },5000)
 
 </script>
