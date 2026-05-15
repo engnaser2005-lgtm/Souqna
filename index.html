@@ -820,7 +820,10 @@ return
 const buyerId=
 session.user.id
 
-const {error}
+const {
+data,
+error
+}
 =
 await supabaseClient
 .from("orders")
@@ -835,6 +838,7 @@ payment_status:"pending",
 order_status:"pending_payment"
 
 })
+.select()
 
 if(error){
 
@@ -848,8 +852,11 @@ return
 
 }
 
+const orderId=
+data[0].id
+
 window.location.href=
-"payment.html?order="+productId
+"payment.html?order="+orderId
 
 }
 
