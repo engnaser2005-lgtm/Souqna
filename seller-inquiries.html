@@ -1,3 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+استفسارات البائع
+</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+body{
+background:#041C3A;
+font-family:Tajawal;
+margin:0;
+padding:30px;
+color:white;
+}
+
+.title{
+font-size:32px;
+font-weight:bold;
+margin-bottom:25px;
+color:#D4AF37;
+}
+
+#list{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.item{
+background:#06264D;
+padding:20px;
+border-radius:15px;
+cursor:pointer;
+transition:.2s;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.item:hover{
+transform:translateY(-3px);
+background:#0b2f5c;
+}
+
+.product{
+font-size:20px;
+font-weight:bold;
+margin-bottom:10px;
+color:#D4AF37;
+}
+
+.text{
+font-size:15px;
+opacity:.9;
+}
+
+.time{
+margin-top:10px;
+font-size:13px;
+opacity:.6;
+}
+
+a{
+text-decoration:none;
+color:white;
+}
+
+.empty{
+background:#06264D;
+padding:30px;
+border-radius:15px;
+text-align:center;
+font-size:18px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="title">
+استفسارات العملاء
+</div>
+
+<div id="list"></div>
+
 <script>
 
 const SUPABASE_URL =
@@ -20,7 +116,13 @@ data:{session}
 =
 await supabaseClient.auth.getSession()
 
-if(!session)return
+if(!session){
+
+alert("يجب تسجيل الدخول")
+
+return
+
+}
 
 const sellerId =
 session.user.id
@@ -32,7 +134,10 @@ error
 =
 await supabaseClient
 .from("conversations")
-.select("*")
+.select(`
+*,
+products(title)
+`)
 .eq(
 "seller_id",
 sellerId
@@ -42,12 +147,34 @@ sellerId
 {ascending:false}
 )
 
-console.log(data)
+if(error){
+
+console.log(error)
+
+return
+
+}
 
 const container =
 document.getElementById("list")
 
-container.innerHTML=""
+container.innerHTML = ""
+
+if(!data || !data.length){
+
+container.innerHTML = `
+
+<div class="empty">
+
+لا توجد استفسارات حالياً
+
+</div>
+
+`
+
+return
+
+}
 
 data.forEach(conv=>{
 
@@ -59,7 +186,24 @@ inquiry.html?conversation_id=${conv.id}
 
 <div class="item">
 
-استفسار جديد عن منتج
+<div class="product">
+
+${conv.products?.title || "منتج"}
+
+</div>
+
+<div class="text">
+
+يوجد استفسار جديد على هذا المنتج
+
+</div>
+
+<div class="time">
+
+${new Date(conv.created_at)
+.toLocaleString("ar-EG")}
+
+</div>
 
 </div>
 
@@ -73,4 +217,12 @@ inquiry.html?conversation_id=${conv.id}
 
 loadConversations()
 
+setInterval(()=>{
+loadConversations()
+},5000)
+
 </script>
+
+</body>
+
+</html>
