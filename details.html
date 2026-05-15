@@ -102,13 +102,39 @@
             <h1>${data.name}</h1>
             <p class="price">${data.price} ريال</p>
             <p>${data.description || 'لا يوجد وصف للمنتج'}</p>
-            <button class="btn">إتمام الشراء</button>
+            <button
+class="btn"
+onclick="openInquiry(
+'${data.id}',
+'${data.user_id}'
+)">
+استفسار عن المنتج
+</button>
           </div>
         </div>
       `
     }
 
     loadProduct()
+    window.openInquiry = function(
+productId,
+sellerId
+){
+
+localStorage.setItem(
+"productId",
+productId
+)
+
+localStorage.setItem(
+"sellerId",
+sellerId
+)
+
+window.location.href =
+"chat.html"
+
+}
   </script>
 
 </body>
