@@ -230,6 +230,26 @@ loadOrders()
 
 }
 
+async function confirmDelivery(orderId){
+
+await supabaseClient
+.from("orders")
+.update({
+
+order_status:"delivered",
+delivery_status:"received"
+
+})
+.eq(
+"id",orderId)
+
+alert(
+"تم تأكيد الاستلام"
+)
+
+loadOrders()
+
+}
 loadOrders()
 
 </script>
