@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>إدارة الطلبات</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Tajawal',sans-serif;
+}
+
+body{
+background:#041C3A;
+padding:30px;
+color:white;
+}
+
+h1{
+color:#D4AF37;
+margin-bottom:30px;
+}
+
+.orders{
+
+display:grid;
+gap:20px;
+
+}
+
+.card{
+
+background:#06264D;
+padding:25px;
+border-radius:20px;
+border:1px solid rgba(255,255,255,.1);
+
+}
+
+img{
+
+width:250px;
+border-radius:10px;
+margin-top:15px;
+
+}
+
+button{
+
+margin-top:15px;
+padding:12px 20px;
+background:#D4AF37;
+color:#041C3A;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>
+إدارة الطلبات
+</h1>
+
+<div id="orders" class="orders">
+
+جاري التحميل...
+
+</div>
+
+<script>
+
+const SUPABASE_URL=
+"https://dkhjaktcjbnndxtxcetf.supabase.co"
+
+const SUPABASE_KEY=
+"sb_publishable_Xuhcjef7xW1PFpSuVLmK8A_rFXBFcMd"
+
+const supabaseClient=
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+)
+
+async function loadOrders(){
+
+const container=
+document.getElementById("orders")
+
+const {
+data,
+error
+}
+=
+await supabaseClient
+.from("orders")
+.select("*")
+.order(
+"created_at",
+{ascending:false}
+)
+
+if(error){
+
+container.innerHTML=
+"فشل تحميل الطلبات"
+
+return
+
+}
+
+if(!data.length){
+
+container.innerHTML=
+"لا توجد طلبات"
+
+return
+
+}
+
+container.innerHTML=""
+
+data.forEach(order=>{
+
+container.innerHTML+=`
+
+<div class="card">
+
+<p>
+رقم الطلب:
+${order.id}
+</p>
+
+<p>
+المبلغ:
+${order.amount}
+$
+</p>
+
+<p>
+حالة الدفع:
+${order.payment_status}
+</p>
+
+<p>
+حالة الطلب:
+${order.order_status}
+</p>
+
+${
+order.payment_image ?
+
+`<img src="${order.payment_image}">`
+
+:
+
+""
+
+}
+
+<button
+onclick="startShipping(
+'${order.id}'
+)"
+>
+
+بدء الشحن
+
+</button>
+
+</div>
+
+`
+
+})
+
+}
+
+async function startShipping(orderId){
+
+const tracking=
+prompt(
+"أدخل رقم التتبع"
+)
+
+if(!tracking)return
+
+await supabaseClient
+.from("orders")
+.update({
+
+order_status:"shipping",
+
+tracking_number:tracking
+
+})
+.eq(
+"id",
+orderId
+)
+
+loadOrders()
+
+}
+
+loadOrders()
+
+</script>
+
+</body>
+
+</html>
