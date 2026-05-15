@@ -163,15 +163,23 @@ async function uploadPayment(){
 const status=
 document.getElementById("status")
 
+const btn=
+document.querySelector("button")
+
+btn.disabled=true
+btn.innerText=
+"جاري الرفع..."
+
 const file=
 document.getElementById("paymentImage")
 .files[0]
 
 if(!file){
 
-alert(
-"اختر صورة"
-)
+alert("اختر صورة")
+
+btn.disabled=false
+btn.innerText="رفع الإثبات"
 
 return
 
@@ -184,19 +192,15 @@ const fileName=
 Date.now()+"_"+file.name
 
 const {
-
 error:uploadError
-
 }
 =
 await supabaseClient
 .storage
 .from("payments")
 .upload(
-
 fileName,
 file
-
 )
 
 if(uploadError){
@@ -206,14 +210,15 @@ console.log(uploadError)
 status.innerHTML=
 "فشل رفع الصورة"
 
+btn.disabled=false
+btn.innerText="رفع الإثبات"
+
 return
 
 }
 
 const {
-
 data:urlData
-
 }
 =
 supabaseClient
@@ -227,9 +232,7 @@ const imageUrl=
 urlData.publicUrl
 
 const {
-
 error:updateError
-
 }
 =
 await supabaseClient
@@ -237,7 +240,6 @@ await supabaseClient
 .update({
 
 payment_image:imageUrl,
-
 payment_status:"uploaded"
 
 })
@@ -253,6 +255,9 @@ console.log(updateError)
 status.innerHTML=
 "فشل تحديث الطلب"
 
+btn.disabled=false
+btn.innerText="رفع الإثبات"
+
 return
 
 }
@@ -263,9 +268,9 @@ status.innerHTML=
 setTimeout(()=>{
 
 window.location.href=
-"index.html"
+"orders.html"
 
-},2000)
+},1500)
 
 }
 
