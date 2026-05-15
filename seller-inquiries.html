@@ -1,0 +1,76 @@
+<script>
+
+const SUPABASE_URL =
+"https://dkhjaktcjbnndxtxcetf.supabase.co"
+
+const SUPABASE_KEY =
+"ضع المفتاح"
+
+const supabaseClient =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+)
+
+async function loadConversations(){
+
+const {
+data:{session}
+}
+=
+await supabaseClient.auth.getSession()
+
+if(!session)return
+
+const sellerId =
+session.user.id
+
+const {
+data,
+error
+}
+=
+await supabaseClient
+.from("conversations")
+.select("*")
+.eq(
+"seller_id",
+sellerId
+)
+.order(
+"created_at",
+{ascending:false}
+)
+
+console.log(data)
+
+const container =
+document.getElementById("list")
+
+container.innerHTML=""
+
+data.forEach(conv=>{
+
+container.innerHTML += `
+
+<a href="
+inquiry.html?conversation_id=${conv.id}
+">
+
+<div class="item">
+
+استفسار جديد عن منتج
+
+</div>
+
+</a>
+
+`
+
+})
+
+}
+
+loadConversations()
+
+</script>
