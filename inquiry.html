@@ -123,10 +123,21 @@ data:{session}
 =
 await supabaseClient.auth.getSession()
 
+if(!session){
+
+alert("يجب تسجيل الدخول")
+
+return
+
+}
+
 const buyerId=
 session.user.id
 
-let {data}
+const {
+data:conversation,
+error
+}
 =
 await supabaseClient
 .from("conversations")
@@ -139,11 +150,26 @@ productId
 "buyer_id",
 buyerId
 )
-.single()
+.maybeSingle()
 
-if(!data){
+if(error){
 
-const result=
+console.log(error)
+
+}
+
+if(conversation){
+
+conversationId=
+conversation.id
+
+}else{
+
+const {
+data:newConversation,
+error:insertError
+}
+=
 await supabaseClient
 .from("conversations")
 .insert({
@@ -156,12 +182,20 @@ seller_id:sellerId
 .select()
 .single()
 
-data=result.data
+if(insertError){
+
+console.log(insertError)
+
+alert("فشل إنشاء المحادثة")
+
+return
 
 }
 
 conversationId=
-data.id
+newConversation.id
+
+}
 
 loadMessages()
 
@@ -169,8 +203,11 @@ loadMessages()
 
 async function loadMessages(){
 
+if(!conversationId)return
+
 const {
-data
+data:messages,
+error
 }
 =
 await supabaseClient
@@ -180,6 +217,18 @@ await supabaseClient
 "conversation_id",
 conversationId
 )
+.order(
+"created_at",
+{ascending:true}
+)
+
+if(error){
+
+console.log(error)
+
+return
+
+}
 
 const container=
 document.getElementById(
@@ -188,7 +237,16 @@ document.getElementById(
 
 container.innerHTML=""
 
-data.forEach(msg=>{
+if(!messages || !messages.length){
+
+container.innerHTML=
+"لا توجد رسائل بعد"
+
+return
+
+}
+
+messages.forEach(msg=>{
 
 container.innerHTML+=`
 
@@ -202,6 +260,9 @@ ${msg.message}
 
 })
 
+container.scrollTop=
+container.scrollHeight
+
 }
 
 async function sendMessage(){
@@ -212,11 +273,25 @@ data:{session}
 =
 await supabaseClient.auth.getSession()
 
+if(!session){
+
+alert("يجب تسجيل الدخول")
+
+return
+
+}
+
 const text=
 document.getElementById(
 "messageInput"
 ).value
 
+if(!text)return
+
+const {
+error
+}
+=
 await supabaseClient
 .from("messages")
 .insert({
@@ -232,6 +307,16 @@ text
 
 })
 
+if(error){
+
+console.log(error)
+
+alert("فشل إرسال الرسالة")
+
+return
+
+}
+
 document.getElementById(
 "messageInput"
 ).value=""
@@ -241,6 +326,10 @@ loadMessages()
 }
 
 initConversation()
+
+setInterval(()=>{
+loadMessages()
+},3000)
 
 </script>
 
